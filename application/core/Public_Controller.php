@@ -2,6 +2,8 @@
 
 class Public_Controller extends MY_Controller {
 	
+    var $participants = array();
+    
     function __construct() {
 		
         parent::__construct();
@@ -39,11 +41,12 @@ class Public_Controller extends MY_Controller {
 		//$this->template->theme  	= 'default';
 		//$this->template->title  	= 'Page Title';
 		//$this->template->meta_data  = array();
-
 		//$this->template->layout     = 'template/public/site_template';
-
 		//print_r($this->template);
-
+        
+        // Set participant session objects
+        $this->participant = $this->session->userdata('participant');
+        
     }
 	
 	protected function getSiteStatus() {

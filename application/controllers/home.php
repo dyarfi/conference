@@ -24,7 +24,7 @@
 //echo '</pre>';
 
 class Home extends Public_Controller {
-
+    
 	public function __construct() {
 		parent::__construct();
 		
@@ -46,17 +46,17 @@ class Home extends Public_Controller {
 		$this->load->model('conference/Conferences');
 		$this->load->model('conference/Informations');		
 		$this->load->model('conference/Speakers');
-		
+        $this->load->model('conference/Schedules');
+        
 	}
 	
-	public function index() {
-		
+	public function index() {		
 					
 		// Set site title page with module menu
 		$data['page_title'] = $this->config->item('developer_name') .' | '. $this->Settings->getByParameter('title_default')->value;
 		
-		// Get first conference
-		$conference = $this->Conferences->getConferenceLatest();
+		// Get latest conference
+		$conference         = $this->Conferences->getConferenceLatest();
 
 		// Set conference link data
 		$data['conference']	= $conference;
@@ -65,9 +65,10 @@ class Home extends Public_Controller {
 		$data['informations'] = $this->Informations->getByConferenceId($conference->id);
 
 		// Set speakers link data
-		$data['speakers'] = $this->Speakers->getByConferenceId($conference->id);
+		$data['speakers']   = $this->Conferences->getSpeakers($conference->id);
 
-		print_r($data['speakers']);
+		// Set speakers link data
+		$data['schedules']  = $this->Schedules->getAllSchedule(array('conference_id'=>$conference->id));
 
 		// Set facebook link data
 		$data['facebook']	= $this->Settings->getByParameter('socmed_facebook');

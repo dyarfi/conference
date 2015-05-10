@@ -36,6 +36,7 @@ class Conferences Extends CI_Model {
 						'location'		=> '',
 						
 						'messages'		=> '',
+                        'location'		=> '',
 
 						'user_id'		=> 0,
 						'status'		=> '',
@@ -60,41 +61,35 @@ class Conferences Extends CI_Model {
 		$sql	= 'CREATE TABLE IF NOT EXISTS `'.$this->table.'` ('
 				.'`id` int(11) NOT NULL AUTO_INCREMENT, '
 				.'`type` int(11) NOT NULL, '
-
 				.'`name` varchar(128) NOT NULL, '
 				.'`subject` varchar(128) NOT NULL, '
+                .'`synopsis` TEXT NULL, '
 				.'`description` TEXT NULL, '
-
 				.'`open_date` int(32) NOT NULL, '
 				.'`close_date` char(32) NOT NULL, '
-
-
 				.'`is_fee` tinyint(1) NOT NULL, '
 				.'`is_submit` tinyint(1) NOT NULL, '
 				.'`is_speaker` tinyint(1) NOT NULL, '
 				.'`is_invitation` tinyint(1) NOT NULL, '
-				
-
 				.'`registration_fee` varchar(256) NOT NULL, '
-
-
 				.'`photo` varchar(256) NOT NULL, '
-				
-				
 				.'`is_located` tinyint(1) NOT NULL, '
 				.'`is_related` tinyint(1) NOT NULL, '
-
-				.'`messages` TEXT NULL, '
-				
+                .'`messages` TEXT NULL, '
+                .'`subject` varchar(255) NULL, '
 				.'`user_id` int(11) NOT NULL, '
 				.'`status` ENUM(\'publish\', \'draft\', \'unpublish\') NULL DEFAULT \'publish\', '
 				.'`added` int(11) NOT NULL, '
 				.'`modified` int(11) NOT NULL, '
 				.'PRIMARY KEY (`id`) '
-				//.'UNIQUE KEY `name` (`name`) '
-				.') ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1';
-				
-				
+				.') ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1; '
+                // Add n to n table relation
+                .'CREATE TABLE IF NOT EXISTS `tbl_conference_speakers` ('
+                .'`speaker_id` int(11) NOT NULL,'
+                .'`conference_id` int(11) NOT NULL,'
+                .'`priority` int(11) NOT NULL'
+                .') ENGINE=MyISAM DEFAULT CHARSET=utf8;';
+        
 		$this->db->query($sql);
 		
         if(!$this->db->query('SELECT * FROM `'.$this->table.'` LIMIT 0, 1;'))
@@ -139,6 +134,7 @@ class Conferences Extends CI_Model {
 	public function getConferenceLatest(){
 		$data = array();
 		$options = array('status' => 'publish');
+        $this->db->order_by('id','desc');
 		$Q = $this->db->get_where($this->table,$options,1);
 		if ($Q->num_rows() > 0){
 			foreach ($Q->result_object() as $row)
@@ -196,21 +192,28 @@ class Conferences Extends CI_Model {
 		return $insert_id;
 		
 	}
-	public function setEmployeeId($object=null){
+    
+	public function getSpeakers($id=null){
 		
-		// Set User data
-		$data = array(			
-				'user_id' => $object->user_id,
-				'modified'=> time(),	
-			    );
-		
-		// Check Conference id
-		$this->db->where('id', $object->id);
+		$this->db->select('*');
+        $this->db->from('tbl_conference_speakers');
+        $this->db->join('tbl_speakers', 'tbl_conference_speakers.speaker_id = tbl_speakers.id');
+        $this->db->where('conference_id', $id);
+        
+        $Q = $this->db->get();
+        
+		if ($Q->num_rows() > 0){
+			foreach ($Q->result_object() as $row){
+                $data[] = $row;
+            }
+		}
+		$Q->free_result();
 		
 		// Update User data
-		return $this->db->update($this->table, $data);
+		return $data;
 		
 	}
+    
 	public function deleteConference($id) {
 		
 		// Check Conference id

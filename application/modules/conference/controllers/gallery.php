@@ -52,8 +52,8 @@ class Gallery extends Admin_Controller {
 			$crud->callback_column('added',array($this,'_callback_time'));
 			$crud->callback_column('modified',array($this,'_callback_time'));
 			$crud->callback_column('file_name',array($this,'_callback_filename'));
-
-			$crud->field_type('added','hidden');
+            $crud->field_type('user_id','hidden');
+            $crud->field_type('added','hidden');
             $crud->field_type('modified','hidden');
             
 			$state = $crud->getState();

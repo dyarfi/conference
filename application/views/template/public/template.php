@@ -9,7 +9,8 @@
     <link href="<?php echo base_url();?>assets/public/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 
 	<!--link href="<?php echo base_url();?>assets/public/js/rs-plugin/css/settings.css" media="screen" rel="stylesheet"-->
-	
+
+	<link href="<?php echo base_url();?>assets/public/css/fonts.css" rel="stylesheet" type="text/css">
 	<link href="<?php echo base_url();?>assets/public/css/fancybox/jquery.fancybox.css" rel="stylesheet" type="text/css">
 	
     <!-- Fonts -->
@@ -37,7 +38,7 @@
 				<div class="messageFlash">
 					<?php $this->load->view('flashdata'); ?>
 				</div>
-				<div class="content">
+				<div class="content container">
 					<?php $this->load->view($main); ?>
 				</div>
 			</div>
@@ -46,16 +47,16 @@
 		
 	</div>    
 	
-	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+	<!--<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>-->
 	
 	<!-- Core JavaScript Files -->
     <script src="<?php echo base_url();?>assets/public/js/jquery.min.js"></script>
-	<script src="<?php echo base_url();?>assets/public/js/gmap3.min.js"></script>
+	<!--<script src="<?php echo base_url();?>assets/public/js/gmap3.min.js"></script>-->
 	<!--<script src="<?php echo base_url();?>assets/public/js/jquery-ui/jquery-ui.min.js"></script>-->
 	
+	<script src="<?php echo base_url();?>assets/public/js/bootstrap.min.js"></script>
     <script src="<?php echo base_url();?>assets/public/js/jquery.fancybox.pack.js"></script>
     
-	<script src="<?php echo base_url();?>assets/public/js/bootstrap.min.js"></script>
     <script src="<?php echo base_url();?>assets/public/js/jquery.easing.min.js"></script>	
 	<script src="<?php echo base_url();?>assets/public/js/jquery.scrollTo.js"></script>
 	<script src="<?php echo base_url();?>assets/public/js/wow.min.js"></script>
@@ -72,4 +73,4 @@
 	
 </body>
 </html>
-<?php echo $this->benchmark->memory_usage();?>
+<?php // echo $this->benchmark->memory_usage();?>

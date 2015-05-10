@@ -51,24 +51,51 @@ class Conference extends Admin_Controller {
             $crud->set_subject('Conference');                            
             // Set table relation
             //$crud->set_relation('career_id', 'tbl_careers', 'subject');
-			// Set new action
-			//$crud->add_action('Set To Employee', '', '','fa fa-arrow-circle-left',array($this,'_callback_set_Conference_to_employee'));
-			// Callback_column set to
-            $crud->callback_column('set_to',array($this,'_callback_set_link'));
-			// Set column
-            $crud->columns('subject','name','description','open_date','close_date','photo','status');
-            // Set column display 
-            
-            //$crud->display_as('career_id','Career Applied');
-			// Set column display 
-            //$crud->display_as('set_to','Set to Employee');
 			
-            // Set custom field display for gender
-            //$crud->field_type('gender','dropdown',array('1' => 'Male', '0' => 'Female')); 
+            $crud->set_relation_n_n('speakers', 'tbl_conference_speakers', 'tbl_speakers', 'conference_id', 'speaker_id', 'subject', 'priority');
+            
+            // Set new action
+			//$crud->add_action('Set To Employee', '', '','fa fa-arrow-circle-left',array($this,'_callback_set_Conference_to_employee'));
+			
+            // Callback Column 
+            //$crud->callback_column('set_to',array($this,'_callback_set_link'));
+            
+            
+			// Set column to display in add / edit
+            $crud->columns('subject','name','description','open_date','close_date','photo','status');
+            
+            // Set column display 
+            $crud->display_as('is_submit','Submissions');
+			$crud->display_as('is_speaker','Speakers');
+            $crud->display_as('is_invitation','Invitation');
+			$crud->display_as('registration_fee','Registration Fee');
+			
+            // Callback Field
+            $crud->callback_field('is_fee',array($this,'_callback_is_fee'));
+            
+            // Fields
+            $crud->fields('type','name','subject','speakers','synopsis','description','open_date','close_date','registration_fee','is_speaker','is_invitation','is_submit','photo','messages','location','status');
+			
+            // Set custom field display
+            $crud->field_type('type','dropdown',array('1' => 'Conference', '2' => 'Symposium','3'=>'Seminar','3'=>'Colloquium','4'=>'Workshop','5'=>'Roundtable')); 
+            
+            $crud->field_type('is_submit','true_false',array('1' => 'Yes', '0' => 'No')); 
+            $crud->field_type('is_speaker','true_false',array('1' => 'Yes', '0' => 'No')); 
+            $crud->field_type('is_invitation','true_false',array('1' => 'Yes', '0' => 'No')); 
+            $crud->field_type('is_fee','true_false',array('1' => 'Yes', '0' => 'No')); 
+            
+            $crud->field_type('open_date','date');
+            $crud->field_type('close_date','date');
+            
 			// Set custom field display for status
-            $crud->field_type('status','dropdown',array('1' => 'Active', '0' => 'Inactive')); 
+            $crud->field_type('status','enum',array('publish', 'draft', 'unpublish')); 
+            
+            $crud->field_type('user_id','hidden');
             $crud->field_type('added','hidden');
             $crud->field_type('modified','hidden');
+            
+            //$this->db->last_query();
+            
             // Set upload field
 			$crud->set_field_upload('photo','uploads/conferences');
             $this->load($crud, 'Conferences');
@@ -82,6 +109,11 @@ class Conference extends Admin_Controller {
     }
      * 
      */
+    
+    public function _callback_is_fee ($value, $row) {
+        return '<script>$("input[name="is_fee"]).click(function() { alert("asdf"); })</script>';
+		//return '<input type="text" maxlength="50" value="'.$value.'" name="is_fee">asdasdas';
+    }
     
     public function _callback_set_link ($value, $row) {
 		if ($row->user_id == NULL) { 

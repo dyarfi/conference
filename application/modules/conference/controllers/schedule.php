@@ -21,8 +21,8 @@ class Schedule extends Admin_Controller {
     public function __construct() {
 	    parent::__construct();
 
-	    // Load Careers model
-	    $this->load->model('Careers');
+	    // Load Conferences model
+	    $this->load->model('Conferences');
 
 	    // Load Schedule model
 	    $this->load->model('Schedules');
@@ -36,7 +36,7 @@ class Schedule extends Admin_Controller {
 	    // Set our Grocery CRUD
             $crud = new grocery_CRUD();
             // Set tables
-            $crud->set_table('tbl_Schedules');
+            $crud->set_table('tbl_schedules');
             // Set CRUD subject
             $crud->set_subject('Schedule');                    
             // Set column
@@ -45,6 +45,7 @@ class Schedule extends Admin_Controller {
 			$crud->required_fields('subject','name','status');    
 			// Set custom field display for status
             $crud->field_type('status','dropdown',array('1' => 'Active', '0' => 'Inactive')); 
+            $crud->field_type('user_id','hidden');
             $crud->field_type('added','hidden');
             $crud->field_type('modified','hidden');
             // Set upload field

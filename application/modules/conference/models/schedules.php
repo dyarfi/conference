@@ -101,8 +101,13 @@ class Schedules Extends CI_Model {
 			return $data;
 		}
 	}
-	public function getAllSchedule($status=null){
+	public function getAllSchedule($option=null){
 		$data = array();
+        
+        if ($option) {
+            $this->db->where($option);
+        }
+        
 		$this->db->order_by('added');
 		$Q = $this->db->get($this->table);
 			if ($Q->num_rows() > 0){

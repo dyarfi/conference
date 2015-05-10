@@ -50,7 +50,7 @@ class Speaker extends Admin_Controller {
 			//$crud->where('tbl_users.status','1');
 			//$crud->where('tbl_user_profiles.status',1);
             // Set tables
-            $crud->set_table('tbl_schedules');
+            $crud->set_table('tbl_speakers');
 			// Handles the default primary key for a specific table. 
 			//$crud->set_primary_key('user_id','tbl_user_profiles');
             // Set CRUD subject
@@ -60,19 +60,14 @@ class Speaker extends Admin_Controller {
 			// $crud->set_relation_n_n('category', 'film_category', 'category', 'film_id', 'category_id', 'name');
 			// $crud->set_relation_n_n('actors', 'film_actor', 'actor', 'film_id', 'actor_id', 'fullname','priority');
 			// $crud->set_relation_n_n('user_id', 'tbl_users', 'tbl_user_groups','id','group_id','name');
-            $crud->set_relation('conference_id', 'tbl_conferences', 'name');
+            //$crud->set_relation('conference_id', 'tbl_conferences', 'subject');
+            // Set table relation	    
+			// Set column
+            $crud->columns('subject','name','biography','photo','status');			
             // Set column display 
-            $crud->display_as('user_id','Username');
-			// Set table relation	    
-			//$crud->set_relation('user_id', 'tbl_user_profiles', 'first_name');
-            // Set column
-            $crud->columns('subject','name','conference_id','subject','description','status');			
-            // Set column display 
-            //$crud->display_as('profile_id','Profile');
-			// Set column display 
-            $crud->display_as('conference_id','Conference');
+            //$crud->display_as('conference_id','Conference');
 			// Set custom field display for gender
-            $crud->field_type('gender','dropdown',array('1' => 'Male', '0' => 'Female'));  
+            //$crud->field_type('gender','dropdown',array('1' => 'Male', '0' => 'Female'));  
             $crud->field_type('added','hidden');
             $crud->field_type('modified','hidden');
             // Unset Add
@@ -81,7 +76,7 @@ class Speaker extends Admin_Controller {
 			//$crud->unset_edit();
 			// Set upload field
 			//$crud->set_field_upload('cv_file','uploads/applicants');
-			//$crud->set_field_upload('photo','uploads/applicants');
+			$crud->set_field_upload('photo','uploads/speakers');
             $this->load($crud, 'Speakers');
         } catch (Exception $e) {
             show_error($e->getMessage() . ' --- ' . $e->getTraceAsString());

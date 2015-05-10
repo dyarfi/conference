@@ -12,25 +12,13 @@ class Speakers Extends CI_Model {
 		$this->_model_vars	= array(
 						    'id'		=> 0,
 						    'conference_id'	=> 0,
-						    'name'		=> '',
+						    'name'			=> '',
 						    'subject'		=> '',
-						    'ref_no'		=> '',
-						    'sent_to'		=> '',
-						    'start_date'	=> '',
-						    'end_date'		=> '',
-						    'report_to'		=> '',
-						    'job_purpose'	=> '',
-						    'responsibilities'	=> '',
-						    'requirements'	=> '',
-						    'location'		=> '',
-						    'company'		=> '',
-						    'ext_link1'		=> '',
-						    'ext_link2'		=> '',
-						    'allow_comment'	=> '',
+						    'biography'		=> '',
 						    'user_id'		=> 0,
-						    'count'		=> 0,
+						    'count'			=> 0,
 						    'status'		=> '',
-						    'added'		=> 0,
+						    'added'			=> 0,
 						    'modified'		=> 0);
 		
 		$this->db = $this->load->database('default', true);	
@@ -52,25 +40,14 @@ class Speakers Extends CI_Model {
 				. '`conference_id` INT(11) UNSIGNED NULL, '
 				. '`name` VARCHAR(255) NULL, '
 				. '`subject` VARCHAR(255) NULL, '
-				. '`ref_no` VARCHAR(12) NULL, '
-				. '`sent_to` VARCHAR(32) NULL, '
-				. '`start_date` DATE NULL DEFAULT \'0000-00-00\', '
-				. '`end_date` DATE NULL DEFAULT \'0000-00-00\', '
-				. '`report_to` TINYTEXT NULL, '
-				. '`job_purpose` TEXT NULL, '
-				. '`responsibilities` TEXT NULL, '
-				. '`requirements` TEXT NULL, '
-				. '`location` VARCHAR(128) NULL, '
-				. '`company` VARCHAR(128) NULL, '
-				. '`ext_link1` VARCHAR(324) NULL, '
-				. '`ext_link2` VARCHAR(324) NULL, '
-				. '`allow_comment` TINYINT(1) NOT NULL, '			
+				. '`biography` TEXT NOT NULL, '
+				. '`photo` VARCHAR(255) NULL, '
 				. '`user_id` TINYINT(3) NULL , '
 				. '`count` INT(11) NULL , '		
 				. '`status` TINYINT(1) NULL , '
 				. '`added` INT(11) UNSIGNED NULL, '
 				. '`modified` INT(11) UNSIGNED NULL, '
-				. 'INDEX (`name`, `ref_no`) '
+				. 'INDEX (`name`, `conference_id`) '
 				. ') ENGINE=MYISAM DEFAULT CHARSET=utf8;';
 				
 				

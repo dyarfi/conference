@@ -62,7 +62,6 @@ class Users Extends CI_Model {
 	}
 	
 	public function getCount($status = null){
-	    $data = array();
 	    $options = array('status' => $status);
 	    $this->db->where($options,1);
 	    $this->db->from($this->table);

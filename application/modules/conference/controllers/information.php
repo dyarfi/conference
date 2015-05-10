@@ -57,6 +57,7 @@ class Information extends Admin_Controller {
             $crud->display_as('conference_id', 'Conference');
 			// Set custom field display for status
             $crud->field_type('status','dropdown',array('1' => 'Active', '0' => 'Inactive')); 
+            $crud->field_type('user_id','hidden');
             $crud->field_type('added','hidden');
             $crud->field_type('modified','hidden');
             // Set upload field

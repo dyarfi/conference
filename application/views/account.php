@@ -1,0 +1,97 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); ?>
+<section id="account" class="account">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="col-lg-6 col-md-6 col-sm-6 login">
+                <div class="boxed-grey">
+                <fieldset><legend>LOGIN</legend>
+                  <?php echo form_open_multipart(base_url('account'),array('id'=>'form-login'));?>
+                    <div class="form-group">
+                        <label class="control-label" for="email">Email Address</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+                            <input type="email" class="form-control" id="email" name="email" value="<?php echo set_value('email', $fields['email']) ?>" placeholder="Enter email" required="required" />
+                        </div>
+                        <small class="text-danger"><?php echo $errors['email'];?></small>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="email">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                            <input type="password" class="form-control" id="password" name="password" value="<?php echo set_value('password', $fields['password']) ?>" placeholder="Enter password" required="required" />
+                        </div>
+                        <small class="text-danger"><?php echo $errors['password'];?></small>
+                    </div> 
+                    <?php echo form_submit('submit','LOGIN','class="btn btn-primary"');?>
+                    <div class="pull-right"><a href="#">Forgot Password</a></div>
+                  <?php echo form_close();?>
+                </fieldset>
+                </div>    
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 register">
+                <div class="boxed-grey">
+                <fieldset><legend>REGISTER</legend>
+                    <?php echo form_open_multipart(base_url('account/register'),array('id'=>'form-register'));?>
+                    <div class="form-group">
+                        <label class="control-label" for="fullname">Full Name</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                            <input type="text" class="form-control" id="fullname" name="fullname" value="<?php echo set_value('fullname', $fields['fullname']) ?>" placeholder="Enter full name" required="required" />
+                        </div>
+                        <small class="text-danger"><?php echo $errors['fullname'];?></small>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="email_register">Email Address</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+                            <input type="email" class="form-control" id="email_register" name="email_register" value="<?php echo set_value('email_register', $fields['email_register']) ?>" placeholder="Enter email" required="required" />
+                        </div>
+                        <small class="text-danger"><?php echo $errors['email_register'];?></small>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="gender">Gender</label>
+                        <div class="input-group">
+                            <!--
+                            Male <input type="radio" class="" id="gender" name="gender" value="<?php echo set_value('gender', $fields['gender']) ?>" placeholder="Enter gender" required="required" />
+                            &nbsp;&nbsp;
+                            Female <input type="radio" class="" id="gender" name="gender" placeholder="Enter gender" required="required" />
+                            -->
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-adjust"></span></span>
+                        
+                            <select class="form-control" name="gender">
+                            <?php foreach ($genders as $gender => $gen) {?>
+                                <option value="<?php echo $gender;?>" <?php echo ($gender == $fields['gender']) ? 'selected' : '';?>><?php echo $gen;?></option>
+                            <?php } ?>
+                            </select>
+                        </div>
+                        <small class="text-danger"><?php echo $errors['gender'];?></small>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="phone">Phone Number</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-phone"></span></span>
+                            <input type="text" class="form-control" id="phone" name="phone" value="<?php echo set_value('phone', $fields['phone']) ?>" placeholder="Enter phone number" required="required" />
+                        </div>
+                        <small class="text-danger"><?php echo $errors['phone'];?></small>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="captcha">
+                            Captcha <a class="reload_captcha tooltips" title="Reload Captcha" data-placement="right" rel="<?=base_url()?>account/reload_captcha" href="javascript:;">
+                            <?php echo $captcha['image'];?></a><small class="text-danger">&nbsp; Captcha expired in 60 Seconds.</small>
+                        </label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-info-sign"></span></span>
+                            <input type="text" class="form-control" placeholder="Captcha" id="captcha" name="captcha" value="<?php echo $fields['captcha']; ?>">
+                        </div>
+                        <small class="text-danger"><?php echo $errors['captcha'];?></small>
+                    </div>																							
+                    <div class="form-group">
+                        <?php echo form_submit('text','REGISTER','class="btn btn-primary"');?>
+                    </div>
+                  <?php echo form_close();?>
+                </fieldset>    
+                </div>    
+            </div>
+        </div>
+    </div>
+</section>

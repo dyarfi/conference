@@ -25,9 +25,9 @@ class Gallery extends Admin_Controller {
             // Set CRUD subject
             $crud->set_subject('Gallery');                            
             // Set table relation
-            $crud->set_relation('part_id','tbl_participants','name');
+            $crud->set_relation('participant_id','tbl_participants','name');
             // Set column
-			$crud->columns('type', 'part_id','file_name','status','added','modified');
+			$crud->columns('type', 'participant_id','file_name','status','added','modified');
 			
             //$crud->columns('subject','name','menu_id','synopsis','text','status','added','modified');			
 			// The fields that user will see on add and edit form

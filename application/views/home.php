@@ -2,39 +2,140 @@
 
 <!-- Section: intro -->
 <section id="intro" data-speed="0.2" class="intro parallax-window" data-parallax="scroll" data-image-src="">
-    <div class="page-scroll wow">
+    <!--div class="page-scroll wow">
 		<a href="#service" class="btn btn-circle wow animated bounceInUp" data-wow-delay="0.1s">
 		    <i class="fa fa-angle-double-down animated"></i>
-		</a>
-
-		<div class="container">
-
-				<h2><?php echo $conference->subject;?></h2>
-			
-				<?php if($conference->photo) { ?> 
-					<div><img class="img-thumbnail" src="<?php echo base_url('uploads/conferences').'/'.$conference->photo; ?>"/> </div>
-				<?php } ?>
-				<div class="col-lg-12">
-				<?php 
-					echo $conference->description;
-				?>
-				</div>
-				<div>
-					<?php foreach ($informations as $information) { ?>
-						<div>
-							<h3><?php echo $information->subject;?></h3>
-							<?php if ($information->cover) { ?><img class="img-thumbnail" src="<?php echo base_url('uploads/informations').'/'.$information->cover;?>"/><?php } ?>
-							<div class="text-left"><?php echo $information->description;?></div>
-						</div>
-					<?php } ?>
-				</div>
-		</div>
-
-
+		</a> 
+    </div-->
+    <div class="container">
+            <!--<h2><?php //echo url_title(strtolower($conference->subject), '-');?></h2>-->        
+            <div class="col-lg-8 col-md-8 col-sm-8 text-left">
+            <h2 class="page-header text-center"><?php echo $conference->name;?></h2>
+            <h3 class="text-center capitalize"><?php echo $conference->subject;?></h3>
+            <?php if($conference->synopsis) { ?>
+                <div class="lead"><?php echo $conference->synopsis;?></div><br/>
+            <?php } ?>
+            <?php if($conference->photo) { ?> 
+                <div class="lead">
+                    <img class="img-thumbnail" src="<?php echo base_url('uploads/conferences').'/'.$conference->photo; ?>"/>
+                </div>
+            <?php } ?>
+            <?php 
+                echo $conference->description;
+            ?>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4">
+                <div class="boxed-grey">
+                    <fieldset><legend>Conference Date</legend>
+                    <?php echo date('d - M - Y',strtotime($conference->open_date)); ?>
+                        
+                    <?php if($conference->messages) { ?>
+                        <div><?php echo strip_tags($conference->messages);?></div><br/>
+                    <?php } ?>
+                    </fieldset>     
+                    
+                    <fieldset><legend>Other Activities</legend>
+                    <?php if($conference->messages) { ?>
+                        <div><?php echo strip_tags($conference->messages);?></div><br/>
+                    <?php } ?>
+                    </fieldset>     
+                    
+                    <fieldset><legend>Important Dates</legend>
+                    <?php if($conference->messages) { ?>
+                        <div><?php echo strip_tags($conference->messages);?></div><br/>
+                    <?php } ?>
+                    </fieldset>
+                    <?php 
+                    if ($this->participant) { ?>
+                    <div>
+                        <a href="<?php echo base_url('account/dashboard');?>" class="btn btn-primary">My Dashboard</a>
+                    </div>
+                    <?php } else { ?>
+                    <div>
+                        <a href="<?php echo base_url('account/register');?>" class="btn btn-primary">Join the Conference</a>
+                    </div>
+                    <?php } ?>
+                </div>
+            </div>
     </div>
 </section>
 <!-- /Section: intro -->
-	
+
+<?php if ($informations) { ?>
+<section id="information">
+	<h3 class="text-center">Information</h3>
+	<div class="row-fluid clearfix">
+		<div class="col-lg-12 col-md-12 col-sm-12 column">
+			<div class="row-fluid">
+
+				<div class="row-fluid control-handler">
+					<div class="pull-right clearfix">
+						<a class="right carousel-control" href="#myCarousel3" data-slide="prev">
+							<span class="glyphicon glyphicon-backward">PREV</span>
+						</a>
+						<a class="left carousel-control" href="#myCarousel3" data-slide="next">
+							<span class="glyphicon glyphicon-play">NEXT</span>
+						</a>
+					</div>	
+				</div>	
+					
+				<div id="myCarousel3" class="carousel-bot slide" data-ride="carousel">
+					<div class="carousel-inner">
+						<div class="item active">
+							<?php foreach ($informations as $information) { ?>
+								<div class="col-lg-4 col-md-4 col-sm-4">
+									<div class="thumbnail">
+										<div class="thumb-holder">
+											<?php if ($information->cover) { ?>
+												<div style="max-width:100%;height:180px;overflow:hidden;margin:0 auto 10px auto" class="img-rounded"><img class="img-responsive" src="<?php echo base_url('uploads/informations').'/'.$information->cover;?>"/></div>
+											<?php } ?>
+										</div>
+										<div class="caption">
+											<h4><?php echo $information->subject;?></h4>
+											<!--div class="clearfix history btn-sm">
+												<span class="pull-left"><span class="glyphicon glyphicon-time"></span> 03 DEC 2014</span>
+												<span class="pull-right"><span class="glyphicon glyphicon-edit"></span> JANE DOE</span>
+											</div-->
+											<div><?php echo word_limiter(strip_tags($information->description,'<strong><b>'));?></div>
+											<div>
+												<a class="btn-link" href="<?php echo base_url('information') .'/'. $information->name;?>">Read More</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							<?php } ?>
+						</div>
+					</div>	
+				</div>
+
+			</div>
+		</div>
+	</div>
+</section>	
+<?php } ?>
+
+<?php if ($speakers) { ?>
+<section id="speakers">
+	<div class="container">
+		<div class="col-lg-12 col-md-12 col-sm-12">
+			<h3 class="text-center">Speakers</h3>
+			<?php foreach ($speakers as $speaker) { ?>
+				<div class="col-lg-4 col-md-4 col-sm-4">
+					<h5><?php echo $speaker->subject;?></h5>
+					<?php if ($speaker->photo) { ?>
+						<div style="max-width:100%;height:180px;overflow:hidden;margin:0 auto 10px auto" class="img-rounded"><img class="img-responsive" src="<?php echo base_url('uploads/speakers').'/'.$speaker->photo;?>"/></div>
+					<?php } ?>
+					<div class="text-left">
+						<?php echo word_limiter(strip_tags($speaker->biography,'<strong><b>'));?>
+						<a class="" href="<?php echo base_url('information') .'/'. $speaker->name;?>">Detail</a>
+					</div>
+				</div>
+			<?php } ?>
+		</div>
+	</div>
+</section>	
+<?php } ?>
+
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">

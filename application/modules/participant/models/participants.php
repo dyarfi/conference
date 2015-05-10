@@ -26,22 +26,25 @@ class Participants Extends CI_Model {
 
 		$sql	= 'CREATE TABLE IF NOT EXISTS `'.$this->table.'` ('
 				. '`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, '
-				. '`part_id` INT(11) UNSIGNED NULL, '
 				. '`id_number` VARCHAR(32) NULL, '
 				. '`name` VARCHAR(255) NULL, '
 				. '`gender` VARCHAR(12) NULL, '
 				. '`age` TINYINT(2) NULL, '
 				. '`address` VARCHAR(512) NULL, '
 				. '`email` VARCHAR(255) NULL, '
+                . '`password` VARCHAR(100) NULL, '
 				. '`phone_number` VARCHAR(255) NULL, '
-				. '`oshi_favorite` VARCHAR(32) NULL, '
 				. '`twitter` VARCHAR(255) NULL, '
 				. '`fb_id` VARCHAR(255) NULL, '
 				. '`fb_pic_url` VARCHAR(512) NULL, '
 				. '`file_name` VARCHAR(512) NULL, '
-				. '`completed` TINYINT(1) NOT NULL, '
+				. '`completed` TINYINT(1) NULL, '
+                . '`logged_in` TINYINT(1) NOT NULL DEFAULT 0, '
+                . '`last_login` INT(11) NULL, '
+                . '`session_id` VARCHAR(40) NOT NULL, '
+				. '`status` TINYINT(1) NOT NULL DEFAULT 0, '
 				. '`join_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, '
-				. 'INDEX (`part_id`, `name`) '
+				. 'INDEX (`name`) '
 				. ') ENGINE=MYISAM DEFAULT CHARSET=utf8;';
 
 		$this->db->query($sql);
@@ -59,7 +62,6 @@ class Participants Extends CI_Model {
     }
 
     public function getCount($status = null){
-		$data = array();
 		$options = array();
 		if ($status) {
 			$options = array('status' => $status);
@@ -98,19 +100,96 @@ class Participants Extends CI_Model {
 		return $data;
     }	
 
+	public function getConferences($id='',$participant_id = ''){
+		
+		$this->db->select('*');
+        $this->db->from('tbl_participant_conferences');
+        $this->db->join('tbl_conferences', 'tbl_participant_conferences.conference_id = tbl_conferences.id');
+        $this->db->where('conference_id', $id)->where('participant_id', $participant_id);
+        
+        $Q = $this->db->get();
+        
+		if ($Q->num_rows() > 0){
+			foreach ($Q->result_object() as $row){
+                $data[] = $row;
+            }
+		}
+		$Q->free_result();
+		
+		// Update User data
+		return $data;
+		
+	}
+    
+    // Authenticate function for user login
+	public function login($object=null){		
+	    if(!empty($object)){
+		$data = array();
+		$options = array(
+				'email' => $object['email'], 
+				'password' => sha1($object['email'].$object['password']));
+
+		$Q = $this->db->get_where($this->table,$options,1);
+		if ($Q->num_rows() > 0){				
+		    foreach ($Q->result_object() as $row) {
+                if (intval($row->status) === 1) {
+                    // Update login state to true
+                    $this->setLoggedIn($row->id);
+                    $data = $row;
+                } else {
+                    $data = 'disabled';
+                }
+		    }
+		} 			 
+        
+        print_r($data);
+        
+
+		$Q->free_result();
+		return $data;
+	    }
+	}
+	
+	public function setLastLogin($id=null) {
+	    //Get user id
+	    $this->db->where('id', $id);
+	    //Return result
+	    return $this->db->update($this->table, array('last_login'=>time(),'logged_in'=>0));
+	}
+	
+	public function setLoggedIn($id=null) {
+	    //Get user id
+	    $this->db->where('id', $id);
+	    //Return result
+	    return $this->db->update($this->table, array('logged_in'=>1,'session_id'=>$this->session->userdata('session_id')));
+	}
+	
+	public function setPassword($user=null,$changed=''){
+		
+	    $password = ($changed) ? $changed : random_string('alnum', 8);
+
+	    $data = array('password' => sha1($user->username.$password));
+
+	    $this->db->where('id', $user->id);
+	    $this->db->update($this->table, $data); 
+
+	    return $password;
+		
+	}
+    
     public function setParticipant($object=null){
 
 		// Set Participant data
 		$data = array(			
-			'part_id'	=> $object['part_id'],
 			'name'		=> $object['name'],
+            'id_number'	=> $object['id_number'],
 			'address'	=> $object['address'],
 			'email'		=> $object['email'],
 			'phone_number'	=> $object['phone_number'],
 			'twitter'	=> $object['twitter'],
 			'fb_id'		=> $object['fb_id'],
-			'fb_pic_url'	=> $object['fb_pic_url'],
-			'join_date'	=> $object['join_date']
+			'fb_pic_url' => $object['fb_pic_url'],
+            'join_date'	=> $object['join_date'],
 		);
 
 		// Insert Participant data
@@ -139,7 +218,7 @@ class Participants Extends CI_Model {
 	    
 		/* SELECT count(`part_id`) `total_join`, date(`join_date`) `join_date` FROM `tbl_participants` WHERE date(`join_date`) >= '2014-10-25' AND date(`join_date`) <= '2015-03-25' GROUP BY date(`join_date`) ORDER BY `join_date` ASC */
 		
-	    $sql = 'SELECT count(`part_id`) `total_join`, date(`join_date`) `join_date` '
+	    $sql = 'SELECT count(`id`) `total_join`, date(`join_date`) `join_date` '
                     .'FROM `'. $this->table .'`'
                     .'WHERE date(`join_date`) >= \''.date('Y-m-d',strtotime("-5 month", time())).'\' '
                     .'AND date(`join_date`) <= \''.date('Y/m/d').'\' '
