@@ -199,7 +199,7 @@ class Conferences Extends CI_Model {
 		$this->db->select('*');
         $this->db->from('tbl_conference_speakers');
         $this->db->join('tbl_speakers', 'tbl_conference_speakers.speaker_id = tbl_speakers.id');
-        $this->db->where('conference_id', $id);
+        $this->db->where('tbl_conference_speakers.conference_id', $id);
         
         $Q = $this->db->get();
         

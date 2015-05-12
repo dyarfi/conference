@@ -24,7 +24,15 @@ class Home extends Public_Controller {
 		$this->load->model('conference/Informations');		
 		$this->load->model('conference/Speakers');
         $this->load->model('conference/Schedules');
-        
+
+		$to      = 'defrian.yarfi@gmail.com';
+		$subject = 'the subject';
+		$message = 'hello';
+		$headers = 'From: defrian.yarfi@gmail.com' . "\r\n" .
+			'Reply-To: defrian.yarfi@gmail.com' . "\r\n" .
+			'X-Mailer: PHP/' . phpversion();
+
+		print_r(mail($to, $subject, $message, $headers));	
 	}
 	
 	public function index() {		

@@ -176,8 +176,8 @@ class Account extends Public_Controller {
 
                     $this->load->library('email');
 
-                    $this->email->from('noreply');
-                    $this->email->to($user->email);
+                    $this->email->from('noreply@localhost');
+                    $this->email->to($object['email']);
                     $this->email->subject('Account Activation');
                     $this->email->message('Hey <b>'.$object['name'].'</b>, please confirm your account by clicking this <a href="'.base_url('account/activation?confirm='.base64_encode($object['verify'].'-:-'.$object['email']).'').'">link</a>, thank you');
 
