@@ -14,6 +14,8 @@ class Speakers Extends CI_Model {
 						    'conference_id'	=> 0,
 						    'name'			=> '',
 						    'subject'		=> '',
+                            'nationality_id'=> '',
+                            'research_area' => '',
 						    'biography'		=> '',
 						    'user_id'		=> 0,
 						    'count'			=> 0,
@@ -40,7 +42,9 @@ class Speakers Extends CI_Model {
 				. '`conference_id` INT(11) UNSIGNED NULL, '
 				. '`name` VARCHAR(255) NULL, '
 				. '`subject` VARCHAR(255) NULL, '
-				. '`biography` TEXT NOT NULL, '
+                . '`nationality_id` INT(11) NULL, '
+                . '`research_area` VARCHAR(255) NULL, '
+                . '`biography` TEXT NOT NULL, '
 				. '`photo` VARCHAR(255) NULL, '
 				. '`user_id` TINYINT(3) NULL , '
 				. '`count` INT(11) NULL , '		
@@ -135,12 +139,14 @@ class Speakers Extends CI_Model {
 		
 		// Set User data
 		$data = array(			
-				'parameter' => $object['username'],
-				'alias' => $object['alias'],
-				'value' => $object['value'],
-				'is_system' => $object['is_system'],
-				'added'		=> time(),	
-				'status' => $object['status']
+				'conference_id'	=> @$object['conference_id'],
+                'name'			=> @$object['name'],
+                'subject'		=> @$object['subject'],
+                'nationality_id'=> @$object['nationality_id'],
+                'research_area' => @$object['research_area'],
+                'biography'		=> @$object['biography'],
+                'added'     => time(),	
+				'status'    => $object['status']
 			    );
 		
 		// Insert User data

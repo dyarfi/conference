@@ -16,7 +16,7 @@ class Account extends Public_Controller {
         
 		// Load Conference model 
 		$this->load->model('conference/Conferences');
-					
+        			
 	}
 	
 	public function index() {
@@ -90,7 +90,11 @@ class Account extends Public_Controller {
 
 	    }
         
-		// Captcha data
+        // Get latest conference
+		$conference         = $this->Conferences->getConferenceLatest();
+        $data['conference'] = $conference;
+        
+        // Captcha data
         $data['captcha']		= $this->Captcha->image();
 
 		// Set error data to view
@@ -120,14 +124,14 @@ class Account extends Public_Controller {
                         'fullname'       => '',
                         'email_register' => '',
 						'gender'         => '',
-                        'phone'          => '',
+                        'phone_number'   => '',
                         'captcha'        => '');
 
         $errors	= $fields;
         $this->form_validation->set_rules('fullname', 'Full Name', 'trim|required|min_length[5]|max_length[32]|xss_clean');
 		$this->form_validation->set_rules('email_register', 'Email','trim|valid_email|required|max_length[55]|callback_match_email|xss_clean');
         $this->form_validation->set_rules('gender', 'Gender','trim|required');		
-        $this->form_validation->set_rules('phone', 'Phone','trim|is_numeric|xss_clean|max_length[25]');
+        $this->form_validation->set_rules('phone_number', 'Phone Number','trim|is_numeric|xss_clean|max_length[25]');
         $this->form_validation->set_rules('captcha', 'Captcha Code','trim|required|xss_clean|callback_match_captcha');
 		
         // Check if post is requested
@@ -156,27 +160,40 @@ class Account extends Public_Controller {
 
 		    } else {
 
-                $part = array();
+                $object = array();
 				
-                $part['email_register']	= $this->input->get_post('email_register', true);
-				$part['fullname']       = $this->input->get_post('fullname', true);
-                $part['gender']         = $this->input->get_post('gender', true);
-				$part['phone']          = $this->input->get_post('phone', true);
+                $object['email']           = $this->input->get_post('email_register', true);
+				$object['name']            = $this->input->get_post('fullname', true);
+                $object['gender']          = $this->input->get_post('gender', true);
+				$object['phone_number']    = $this->input->get_post('phone_number', true);
+				$object['verify']          = $this->input->get_post('captcha', true);
+                $object['status']          = 0;
+                $object['completed']       = 0;
 				
-                //$this->Users->setUser($part);
+                $return = $this->Participants->setParticipant($object);
 				
-                //$user_id = $this->user_model->reg_participant($part);
+                if (!empty($return)) {
 
-                //$this->config->set_item('user_id', $user_id);
+                    $this->load->library('email');
 
-				//$this->session->set_userdata('user_id', $this->user_model->encode($user_id));
+                    $this->email->from('noreply');
+                    $this->email->to($user->email);
+                    $this->email->subject('Account Activation');
+                    $this->email->message('Hey <b>'.$object['name'].'</b>, please confirm your account by clicking this <a href="'.base_url('account/activation?confirm='.base64_encode($object['verify'].'-:-'.$object['email']).'').'">link</a>, thank you');
 
+                    $this->email->send();
+
+                } 
+
+                // Set message
+                $this->session->set_flashdata('message','Please check your Email : <b>'.$object['email'].'</b> for the Account Activation!');
+                    
 				if ($this->input->is_ajax_request()) {
 					// Send json message
 					$result['result']	= 'OK';
 					$result['label']	= base_url('upload');
 				} else {					
-					// Redirect if not ajax
+                    // Redirect if not ajax
 					redirect(base_url());
 				}
 		    }
@@ -216,7 +233,7 @@ class Account extends Public_Controller {
         // Get Participant Conferences
         $data['part_conferences'] = $this->Participants->getConferences($conference->id,$this->participant->id);
         
-		// Set main template
+        // Set main template
 		$data['main'] = 'dashboard';
 				
 		// Set site title page with module menu
@@ -225,6 +242,112 @@ class Account extends Public_Controller {
 		// Load admin template
 		$this->load->view('template/public/template', $this->load->vars($data));
 
+    }
+    
+    // Forgot password method
+    public function activation($code='') {
+    
+        
+    }
+    
+    // Forgot password method
+    public function forgot_password() {
+        
+        // Decode email link
+        $email = base64_decode($this->input->get('confirm'));
+        
+        // Check email link
+        $participant = $this->Participants->getByEmail($email);
+        
+        //print_r($participant);
+        
+        //exit;
+       
+        // Default data setup
+        $fields	= array(
+                        'email'        	=> '',
+						'password'      => '',
+                        );
+
+        $errors	= $fields;
+        $this->form_validation->set_rules('email', 'Email','trim|valid_email|required|min_length[5]|max_length[64]|xss_clean');
+        $this->form_validation->set_rules('password', 'Password','trim|required|xss_clean');	
+        
+        // Check if post is requested
+	    if ($this->input->server('REQUEST_METHOD') == 'POST') {			
+
+		    // Validation form checks
+		    if ($this->form_validation->run() === FALSE)
+		    {
+
+				// Set error fields
+				$error = array();
+				foreach(array_keys($fields) as $error) {
+					$errors[$error] = form_error($error);
+				}
+
+				// Set previous post merge to default
+				$fields = array_merge($fields, $this->input->post());
+				
+				if ($this->input->is_ajax_request()) {
+
+					// Send fields and errors data
+					$result['fields'] = $fields;
+					$result['errors'] = $errors;
+
+				}
+
+		    } else {
+
+                $fields = array();
+				
+				$fields['email']		= $this->input->get_post('email', true);
+				$fields['password']		= $this->input->get_post('password', true);
+				
+                $return = $this->Participants->login($fields);
+				
+                if ($return) {
+                    
+                    // Unset variables 
+                    unset($return->password);
+                    
+                    // Set participant 
+                    $this->session->set_userdata('participant', $return);
+                    
+                }
+                
+                //$this->config->set_item('user_id', $user_id);
+
+				//$this->session->set_userdata('user_id', $this->user_model->encode($user_id));
+
+				if ($this->input->is_ajax_request()) {
+					// Send json message
+					$result['result']	= 'OK';
+					$result['label']	= base_url('upload');
+				} else {					
+					// Redirect if not ajax
+					redirect(base_url('account/dashboard'));
+				}
+		    }
+
+	    }
+
+        // Get latest conference
+		$conference         = $this->Conferences->getConferenceLatest();
+        $data['conference'] = $conference;
+        
+        // Get Participant Conferences
+        $data['part_conferences'] = $this->Participants->getConferences($conference->id,$this->participant->id);
+        
+		// Set main template
+		$data['main'] = 'forgot_password';
+				
+		// Set site title page with module menu
+		$data['page_title'] = 'Forgot Password';
+		
+		// Load admin template
+		$this->load->view('template/public/template', $this->load->vars($data));
+        
     }
     
     // Reload Captcha to the view
@@ -263,8 +386,8 @@ class Account extends Public_Controller {
 				return false;
 		}
 		// Check email if match
-		else if ($this->Users->getUserEmail($email) == 1) {
-				$this->form_validation->set_message('match_email', 'The %s is already taken.');			
+		else if ($this->Participants->getEmail($email) == 1) {
+				$this->form_validation->set_message('match_email', 'The %s is already taken. <a href="'.base_url('account/forgot_password/?confirm='.base64_encode($email)).'" class="forgot-password">Forgot Password</a> Maybe ?');			
 				return false;
 		} else {
 				return true;

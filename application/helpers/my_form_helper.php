@@ -80,11 +80,11 @@ if(! function_exists('get_image_admin'))
 	{
 		?>
 		<div class="control-group">
-		<label class="control-label" for="fileInput"><?=$label?></label>
+		<label class="control-label" for="fileInput"><?php echo $label;?></label>
 		<div class="controls">
 		<div class="fileupload fileupload-new" data-provides="fileupload">
 		<div class="input-append">
-		<div class="uneditable-input"><i class="icon-file fileupload-exists"></i> <span class="fileupload-preview"></span></div><span class="btn btn-alt btn-file"><span class="fileupload-new">Select file</span><span class="fileupload-exists">Change</span><input type="file" name="<?=$container?>" id="<?=$container?>" /></span><a href="#" class="btn btn-alt btn-danger fileupload-exists" data-dismiss="fileupload">Remove</a>
+		<div class="uneditable-input"><i class="icon-file fileupload-exists"></i> <span class="fileupload-preview"></span></div><span class="btn btn-alt btn-file"><span class="fileupload-new">Select file</span><span class="fileupload-exists">Change</span><input type="file" name="<?php echo $container;?>" id="<?php echo $container;?>" /></span><a href="#" class="btn btn-alt btn-danger fileupload-exists" data-dismiss="fileupload">Remove</a>
 		</div>
 		</div>
         </div>

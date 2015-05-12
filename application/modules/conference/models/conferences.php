@@ -76,20 +76,21 @@ class Conferences Extends CI_Model {
 				.'`is_located` tinyint(1) NOT NULL, '
 				.'`is_related` tinyint(1) NOT NULL, '
                 .'`messages` TEXT NULL, '
-                .'`subject` varchar(255) NULL, '
+                .'`location` varchar(255) NULL, '
 				.'`user_id` int(11) NOT NULL, '
 				.'`status` ENUM(\'publish\', \'draft\', \'unpublish\') NULL DEFAULT \'publish\', '
 				.'`added` int(11) NOT NULL, '
 				.'`modified` int(11) NOT NULL, '
 				.'PRIMARY KEY (`id`) '
-				.') ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1; '
+				.') ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1; ';
+                /*
                 // Add n to n table relation
                 .'CREATE TABLE IF NOT EXISTS `tbl_conference_speakers` ('
                 .'`speaker_id` int(11) NOT NULL,'
                 .'`conference_id` int(11) NOT NULL,'
                 .'`priority` int(11) NOT NULL'
                 .') ENGINE=MyISAM DEFAULT CHARSET=utf8;';
-        
+                */
 		$this->db->query($sql);
 		
         if(!$this->db->query('SELECT * FROM `'.$this->table.'` LIMIT 0, 1;'))

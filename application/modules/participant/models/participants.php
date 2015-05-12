@@ -30,7 +30,9 @@ class Participants Extends CI_Model {
 				. '`name` VARCHAR(255) NULL, '
 				. '`gender` VARCHAR(12) NULL, '
 				. '`age` TINYINT(2) NULL, '
-				. '`address` VARCHAR(512) NULL, '
+                . '`nationality_id` INT(11) NULL, '
+                . '`research_area` VARCHAR(255) NULL, '
+                . '`address` VARCHAR(512) NULL, '
 				. '`email` VARCHAR(255) NULL, '
                 . '`password` VARCHAR(100) NULL, '
 				. '`phone_number` VARCHAR(255) NULL, '
@@ -38,6 +40,7 @@ class Participants Extends CI_Model {
 				. '`fb_id` VARCHAR(255) NULL, '
 				. '`fb_pic_url` VARCHAR(512) NULL, '
 				. '`file_name` VARCHAR(512) NULL, '
+                . '`verify` VARCHAR(8) NULL, '
 				. '`completed` TINYINT(1) NULL, '
                 . '`logged_in` TINYINT(1) NOT NULL DEFAULT 0, '
                 . '`last_login` INT(11) NULL, '
@@ -105,7 +108,8 @@ class Participants Extends CI_Model {
 		$this->db->select('*');
         $this->db->from('tbl_participant_conferences');
         $this->db->join('tbl_conferences', 'tbl_participant_conferences.conference_id = tbl_conferences.id');
-        $this->db->where('conference_id', $id)->where('participant_id', $participant_id);
+        $this->db->join('tbl_participant_conference_completed', 'tbl_participant_conferences.participant_id = tbl_participant_conference_completed.participant_id');
+        $this->db->where('tbl_participant_conferences.conference_id', $id)->where('tbl_participant_conferences.participant_id', $participant_id);
         
         $Q = $this->db->get();
         
@@ -119,6 +123,56 @@ class Participants Extends CI_Model {
 		// Update User data
 		return $data;
 		
+	}
+    
+    // Get participant's Email from posts 
+	public function getEmail($email=null){
+	    if(!empty($email)){
+		$data = array();
+
+		// Option and query result
+		$options = array('email' => $email);			
+		$Q = $this->db->get_where($this->table,$options,1);
+
+		// Check result
+		if($Q->num_rows() > 0) {
+                // Return true if not exists
+                return true;
+            } else {
+                // Return false if exists
+                return false;
+            }		 
+	    }
+	}
+    
+    // Get participant's by their Email from posts 
+    public function getByEmail($email = null){
+	    if(!empty($email)){
+		$data = array();
+		$options = array('email' => $email);
+		$Q = $this->db->get_where($this->table,$options,1);
+		if ($Q->num_rows() > 0){
+			foreach ($Q->result_object() as $row)
+			$data = $row;
+		}
+		$Q->free_result();
+		return $data;
+	    }
+	}
+	// Get all Participants Join stats by join_date
+	public function getJoinStats() {
+	    
+		/* SELECT count(`part_id`) `total_join`, date(`join_date`) `join_date` FROM `tbl_participants` WHERE date(`join_date`) >= '2014-10-25' AND date(`join_date`) <= '2015-03-25' GROUP BY date(`join_date`) ORDER BY `join_date` ASC */
+		
+	    $sql = 'SELECT count(`id`) `total_join`, date(`join_date`) `join_date` '
+                    .'FROM `'. $this->table .'`'
+                    .'WHERE date(`join_date`) >= \''.date('Y-m-d',strtotime("-5 month", time())).'\' '
+                    .'AND date(`join_date`) <= \''.date('Y/m/d').'\' '
+                    .'GROUP BY date(`join_date`) ORDER BY `join_date` ASC';
+	    
+	    $query = $this->db->query($sql);
+            
+	    return $query->result_object();
 	}
     
     // Authenticate function for user login
@@ -182,14 +236,17 @@ class Participants Extends CI_Model {
 		// Set Participant data
 		$data = array(			
 			'name'		=> $object['name'],
-            'id_number'	=> $object['id_number'],
-			'address'	=> $object['address'],
-			'email'		=> $object['email'],
-			'phone_number'	=> $object['phone_number'],
-			'twitter'	=> $object['twitter'],
-			'fb_id'		=> $object['fb_id'],
-			'fb_pic_url' => $object['fb_pic_url'],
-            'join_date'	=> $object['join_date'],
+            'email'		=> $object['email'],
+            'gender'	=> @$object['gender'],
+            'age'       => @$object['age'],
+            'nationality_id' => @$object['nationality_id'],
+			'id_number'	=> @$object['id_number'],
+			'address'	=> @$object['address'],
+			'phone_number' => @$object['phone_number'],
+            'verify'    => @$object['verify'],
+			'twitter'	=> @$object['twitter'],
+			'fb_id'		=> @$object['fb_id'],
+			'fb_pic_url' => @$object['fb_pic_url']
 		);
 
 		// Insert Participant data
@@ -213,19 +270,4 @@ class Participants Extends CI_Model {
 		return $this->db->delete($this->table);		
     }	
 	
-	// Get all Participants Join stats by join_date
-	public function getJoinStats() {
-	    
-		/* SELECT count(`part_id`) `total_join`, date(`join_date`) `join_date` FROM `tbl_participants` WHERE date(`join_date`) >= '2014-10-25' AND date(`join_date`) <= '2015-03-25' GROUP BY date(`join_date`) ORDER BY `join_date` ASC */
-		
-	    $sql = 'SELECT count(`id`) `total_join`, date(`join_date`) `join_date` '
-                    .'FROM `'. $this->table .'`'
-                    .'WHERE date(`join_date`) >= \''.date('Y-m-d',strtotime("-5 month", time())).'\' '
-                    .'AND date(`join_date`) <= \''.date('Y/m/d').'\' '
-                    .'GROUP BY date(`join_date`) ORDER BY `join_date` ASC';
-	    
-	    $query = $this->db->query($sql);
-            
-	    return $query->result_object();
-	}
 }

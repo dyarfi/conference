@@ -2,6 +2,7 @@
 <section id="account" class="account">
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
+            <h2 class="page-header text-center"><?php echo $conference->subject;?></h2>
             <div class="col-lg-6 col-md-6 col-sm-6 login">
                 <div class="boxed-grey">
                 <fieldset><legend>LOGIN</legend>
@@ -23,7 +24,7 @@
                         <small class="text-danger"><?php echo $errors['password'];?></small>
                     </div> 
                     <?php echo form_submit('submit','LOGIN','class="btn btn-primary"');?>
-                    <div class="pull-right"><a href="#">Forgot Password</a></div>
+                    <div class="pull-right"><a href="<?php echo base_url('account/forgot_password');?>" class="forgot-password">Forgot Password</a></div>
                   <?php echo form_close();?>
                 </fieldset>
                 </div>    
@@ -67,12 +68,12 @@
                         <small class="text-danger"><?php echo $errors['gender'];?></small>
                     </div>
                     <div class="form-group">
-                        <label class="control-label" for="phone">Phone Number</label>
+                        <label class="control-label" for="phone_number">Phone Number</label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-phone"></span></span>
-                            <input type="text" class="form-control" id="phone" name="phone" value="<?php echo set_value('phone', $fields['phone']) ?>" placeholder="Enter phone number" required="required" />
+                            <input type="text" class="form-control" id="phone_number" name="phone_number" value="<?php echo set_value('phone_number', $fields['phone_number']) ?>" placeholder="Enter phone number" required="required" />
                         </div>
-                        <small class="text-danger"><?php echo $errors['phone'];?></small>
+                        <small class="text-danger"><?php echo $errors['phone_number'];?></small>
                     </div>
                     <div class="form-group">
                         <label class="control-label" for="captcha">

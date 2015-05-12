@@ -105,7 +105,7 @@
 													<tr>
 														<th><i class="fa fa-briefcase"></i> Conference</th>
 														<th class="hidden-xs"><i class="fa fa-question"></i> Description</th>
-														<th><i class="fa fa-bookmark"></i> Amount</th>
+														<th><i class="fa fa-bookmark"></i> Attendees</th>
 														<th></th>
 													</tr>
 													</thead>
@@ -114,17 +114,17 @@
                                                             <tr>
                                                                 <td>
                                                                     <a href="#">
-                                                                        <?php echo strip_tags($conferences->subject);?>
+                                                                        <?php echo word_limiter(strip_tags($conferences->subject),3);?>
                                                                     </a>
                                                                 </td>
                                                                 <td>
                                                                     <a href="#">
-                                                                        <?php echo word_limiter(strip_tags($conferences->description),5);?>
+                                                                        <?php echo word_limiter(strip_tags($conferences->description),3);?>
                                                                     </a>
                                                                 </td>
                                                                 <td>
                                                                     <a href="#">
-                                                                        <?php //echo $conferences->status ;?>
+                                                                        <?php echo ($conferences->status) ? 'Yes' : 'No';?>
                                                                     </a>
                                                                 </td>
                                                             </tr>

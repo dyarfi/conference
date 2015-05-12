@@ -88,7 +88,7 @@ class Public_Controller extends MY_Controller {
 				'added'			=> time()
 			);
 		}*/
-		print_r($this->output->get_output('404',1));
+		//print_r($this->output->get_output('404',1));
 		// Get value from tbl_configurations for maintenance
 		//if ($this->ServerLogs->setServerLog($object)) { }
 	}
