@@ -681,7 +681,9 @@ var App = function () {
 
     // Handles Bootstrap Tooltips.
     var handleTooltips = function () {
-       jQuery('.tooltips').tooltip();
+       if ($('.tooltips').size() != 0) {
+           jQuery('.tooltips').tooltip();
+       }
     }
 
     // Handles Bootstrap Dropdowns

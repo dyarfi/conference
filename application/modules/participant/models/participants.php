@@ -74,7 +74,22 @@ class Participants Extends CI_Model {
 		$data = $this->db->count_all_results();
 		return $data;
     }
-
+    
+    public function getActivation($params='') {
+        if(!empty($params)){
+			$data = array();
+			$options = $params;
+			$Q = $this->db->get_where($this->table,$options,1);
+			if ($Q->num_rows() > 0){
+				foreach ($Q->result_object() as $row)
+				$data = $row;
+			}
+            print_r($data);
+			$Q->free_result();
+			return $data;
+		}
+    }
+    
     public function getParticipant($id = null){
 		if(!empty($id)){
 			$data = array();

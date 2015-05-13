@@ -346,11 +346,7 @@ class image_CRUD {
     protected function _get_delete_url($value)
     {
     	$rsegments_array = $this->ci->uri->rsegment_array();
-        
-        /**** Additional Params for the URL handling ****/
-        $real_url = $this->ci->uri->segment(1) .'/'. $this->ci->uri->segment(2).'/';
-        
-    	return site_url($real_url.$rsegments_array[1].'/'.$rsegments_array[2].'/delete_file/'.$value);
+    	return site_url($rsegments_array[1].'/'.$rsegments_array[2].'/delete_file/'.$value);
     }
 
     protected function _get_photos($relation_value = null)
@@ -401,17 +397,14 @@ class image_CRUD {
 
 	protected function getState()
 	{
-        $rsegments_array = $this->ci->uri->rsegment_array();
-        
-        /**** Additional Params for the URL handling ****/
-        $real_url = $this->ci->uri->segment(1) .'/'. $this->ci->uri->segment(2).'/';
+		$rsegments_array = $this->ci->uri->rsegment_array();
 
 		if(isset($rsegments_array[3]) && is_numeric($rsegments_array[3]))
 		{
-			$upload_url = site_url($real_url.$rsegments_array[1].'/'.$rsegments_array[2].'/upload_file/'.$rsegments_array[3]);
-			$ajax_list_url  = site_url($real_url.$rsegments_array[1].'/'.$rsegments_array[2].'/'.$rsegments_array[3].'/ajax_list');
-			$ordering_url  = site_url($real_url.$rsegments_array[1].'/'.$rsegments_array[2].'/ordering');
-			$insert_title_url  = site_url($real_url.$rsegments_array[1].'/'.$rsegments_array[2].'/insert_title');
+			$upload_url = site_url($rsegments_array[1].'/'.$rsegments_array[2].'/upload_file/'.$rsegments_array[3]);
+			$ajax_list_url  = site_url($rsegments_array[1].'/'.$rsegments_array[2].'/'.$rsegments_array[3].'/ajax_list');
+			$ordering_url  = site_url($rsegments_array[1].'/'.$rsegments_array[2].'/ordering');
+			$insert_title_url  = site_url($rsegments_array[1].'/'.$rsegments_array[2].'/insert_title');
 
 			$state = array( 'name' => 'list', 'upload_url' => $upload_url, 'relation_value' => $rsegments_array[3]);
 			$state['ajax'] = isset($rsegments_array[4]) && $rsegments_array[4] == 'ajax_list'  ? true : false;
@@ -424,10 +417,10 @@ class image_CRUD {
 		}
 		elseif( (empty($rsegments_array[3]) && empty($this->relation_field)) || (!empty($rsegments_array[3]) &&  $rsegments_array[3] == 'ajax_list'))
 		{
-			$upload_url = site_url($real_url.$rsegments_array[1].'/'.$rsegments_array[2].'/upload_file');
-			$ajax_list_url  = site_url($real_url.$rsegments_array[1].'/'.$rsegments_array[2].'/ajax_list');
-			$ordering_url  = site_url($real_url.$rsegments_array[1].'/'.$rsegments_array[2].'/ordering');
-			$insert_title_url  = site_url($real_url.$rsegments_array[1].'/'.$rsegments_array[2].'/insert_title');
+			$upload_url = site_url($rsegments_array[1].'/'.$rsegments_array[2].'/upload_file');
+			$ajax_list_url  = site_url($rsegments_array[1].'/'.$rsegments_array[2].'/ajax_list');
+			$ordering_url  = site_url($rsegments_array[1].'/'.$rsegments_array[2].'/ordering');
+			$insert_title_url  = site_url($rsegments_array[1].'/'.$rsegments_array[2].'/insert_title');
 
 			$state = array( 'name' => 'list', 'upload_url' => $upload_url);
 			$state['ajax'] = isset($rsegments_array[3]) && $rsegments_array[3] == 'ajax_list'  ? true : false;

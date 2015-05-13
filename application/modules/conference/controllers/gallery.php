@@ -8,80 +8,31 @@ class Gallery extends Admin_Controller {
             // Load Conferences model
             $this->load->model('conference/Conferences');
 
-            // Load Gallery model
-            //$this->load->model('participant/Gallery');
-
-            // Load Grocery CRUD
-            $this->load->library('grocery_CRUD');
+            // Load Image CRUD
+            $this->load->library('image_CRUD');
       
     }
 	
     public function index() {
+        
         try {
-			// Set our Grocery CRUD
-            $crud = new grocery_CRUD();
-            // Set tables
-            $crud->set_table('tbl_conference_images');
-            // Set CRUD subject
-            $crud->set_subject('Conference Gallery');                            
-            // Set table relation
-            $crud->set_relation('conference_id','tbl_conferences','subject');
-            // Set column
-			$crud->columns('type', 'conference_id','file_name','status','added','modified');
-			
-            //$crud->columns('subject','name','menu_id','synopsis','text','status','added','modified');			
-			// The fields that user will see on add and edit form
-			//$crud->fields('subject','name','menu_id','synopsis','text','publish_date','unpublish_date','status','added','modified');
-            // Set column display 
-            //$crud->display_as('menu_id','Menu');
-			// Changes the default field type
-			//$crud->field_type('added', 'hidden');
-			//$crud->field_type('modified', 'hidden');
-			// This callback escapes the default auto field output of the field name at the add form
-			//$crud->callback_add_field('added',array($this,'_callback_time_added'));
-			// This callback escapes the default auto field output of the field name at the edit form
-			//$crud->callback_edit_field('modified',array($this,'_callback_time_modified'));
-			// This callback escapes the default auto field output of the field name at the add/edit form. 
-			// $crud->callback_field('status',array($this,'_callback_dropdown'));
-			// This callback escapes the default auto column output of the field name at the add form
-			
-			$crud->field_type('status','dropdown',array('0' => 'Inactive','1' => 'Active','2' => 'Completed')); 
-			$crud->field_type('type','dropdown',array('16' => 'Stiker 16', '2' => 'Stiker 2'));
-			//$crud->field_type('file_name','text');
-			$crud->edit_fields('status','modified');			
-			$crud->callback_column('added',array($this,'_callback_time'));
-			$crud->callback_column('modified',array($this,'_callback_time'));
-			$crud->callback_column('file_name',array($this,'_callback_filename'));
-            $crud->field_type('user_id','hidden');
-            $crud->field_type('added','hidden');
-            $crud->field_type('modified','hidden');
             
-			$state = $crud->getState();
-			
-			if ($state == 'export')
-			{
-				//Do your awesome coding here.
-				$crud->callback_column('file_name',array($this,'_callback_filename_url'));				
-			} 
-			else if ($state == 'edit')
-			{
-				//Do your awesome coding here.
-				$crud->callback_field('modified',array($this,'_callback_time_modified'));				
-			}
-			
-			// $crud->set_field_upload('file_name','uploads/gallery');
-			// $crud->callback_column('modified',array($this,'_callback_time'));  
-			// Sets the required fields of add and edit fields
-			// $crud->required_fields('subject','name','text','status'); 
-            // Set upload field
-            // $crud->set_field_upload('file_name','uploads/pages');
-			// $crud->unset_edit();
-			//$crud->unset_add();
-			$crud->unset_delete();
-			$this->load($crud, 'gallery');
+            $image_crud = new image_CRUD();
+		
+            $image_crud->set_primary_key_field('id');
+            $image_crud->set_url_field('file_name');
+            $image_crud->set_table('tbl_conference_images');
+            $image_crud->set_title_field('title')        
+            ->set_relation_field('conference_id')
+            ->set_ordering_field('priority')
+            ->set_image_path('uploads/conferences');
+            
+            $this->load($image_crud);
+        
         } catch (Exception $e) {
             show_error($e->getMessage() . ' --- ' . $e->getTraceAsString());
         }
+        
     }
     
     public function _callback_time ($value, $row) {
@@ -107,11 +58,6 @@ class Gallery extends Admin_Controller {
 		return ($row->file_name) ? base_url('uploads/users/'.$row->file_name) : '-';
 	}
 	
-    public function _callback_total_image($value, $row) {
-        //$total = $this->user_model->total_image_submitted($row->participant_id);
-        //return $total;
-    }
-	
 	public function _send_email() {
 			
 
@@ -129,18 +75,21 @@ class Gallery extends Admin_Controller {
 		
 	}
     
-    private function load($crud, $nav) {
+    private function load($crud) {
+        
         $output = $crud->render();
-        $output->nav = $nav;
-        if ($crud->getState() == 'list') {
-            // Set Gallery Title 
-            $output->page_title = 'Conference Gallery Listings';
-            // Set Main Template
-            $output->main       = 'template/admin/metronix';
-            // Set Primary Template
-            $this->load->view('template/admin/template.php', $output);
-        } else {
-            $this->load->view('template/admin/popup.php', $output);
-        }    
+
+        // Set Gallery Title 
+        $output->page_title = 'Conference Gallery Listings';
+
+        // Set Main Template
+        $output->main       = 'upload_index';
+
+        // Set Output 
+        $data->output       = $output;
+
+        // Set Primary Template
+        $this->load->view('template/admin/popup_uploader', $output);
+            
     }
 }

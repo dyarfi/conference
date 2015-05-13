@@ -30,6 +30,7 @@ class Gallery Extends CI_Model {
 			    . '`name` VARCHAR(255) NULL, '
 			    . '`title` VARCHAR(255) NULL, '
 			    . '`file_name` TEXT NULL, '
+			    . '`priority` INT(11) DEFAULT NULL, '
 			    . '`count` INT(11) NULL , '	
 			    . '`status` TINYINT(1) NULL DEFAULT 1, '
 			    . '`added` INT(11) NULL, '

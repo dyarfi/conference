@@ -140,7 +140,8 @@ $config['modulelist'] = array(
 						'conference/index/change'	=> 'Change Conference Status',
 						'conference/index/export'	=> 'Export Conference',
 						'conference/index/print'	=> 'Print Conference',
-						// Speaker functions
+						'conference/gallery'			=> 'Conference Gallery',
+                        // Speaker functions
 						'speaker/index/add'     => 'Add Speaker',
 						'speaker/index/view'	=> 'View Speaker',
 						'speaker/index/edit'	=> 'Edit Speaker',
@@ -172,7 +173,7 @@ $config['modulelist'] = array(
 						'confgallery/index/delete' => 'Delete Gallery',
 						'confgallery/index/change' => 'Change Gallery',
 						'confgallery/index/export' => 'Export Gallery',
-						'confgallery/index/print'	=> 'Print Gallery'
+						'confgallery/index/print'	=> 'Print Gallery',
 						),
 	),
     // Participant Module

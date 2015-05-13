@@ -36,33 +36,33 @@ class Conference extends Admin_Controller {
 		// Load Grocery CRUD
 		$this->load->library('grocery_CRUD');
 
+
+        // Load Image CRUD
+        $this->load->library('image_CRUD');
+
     }
 	
     public function index() {
         try {
 			// Set our Grocery CRUD
             $crud = new grocery_CRUD();
-			// Set query for Conferences that doesn't have user id
-			//$crud->where('tbl_conferences.user_id',NULL);
-			//$crud->where('tbl_conferences.status','1');
-            // Set tables
+			// Set tables
             $crud->set_table('tbl_conferences');
             // Set CRUD subject
             $crud->set_subject('Conference');                            
-            // Set table relation
-            //$crud->set_relation('career_id', 'tbl_careers', 'subject');
-			
+            
             $crud->set_relation_n_n('speakers', 'tbl_conference_speakers', 'tbl_speakers', 'conference_id', 'speaker_id', 'subject', 'priority');
             
             // Set new action
-			//$crud->add_action('Set To Employee', '', '','fa fa-arrow-circle-left',array($this,'_callback_set_Conference_to_employee'));
+			//$crud->add_action('Set To Employee', '', '','fa fa-arrow-circle-left',array($this,'_callback_set_conference_to_employee'));
 			
             // Callback Column 
             //$crud->callback_column('set_to',array($this,'_callback_set_link'));
+            $crud->callback_column('gallery',array($this,'_callback_gallery'));
             
             
 			// Set column to display in add / edit
-            $crud->columns('subject','name','description','open_date','close_date','photo','status');
+            $crud->columns('subject','name','description','open_date','close_date','cover_photo','gallery','status');
             
             // Set column display 
             $crud->display_as('is_submit','Submissions');
@@ -74,7 +74,7 @@ class Conference extends Admin_Controller {
             $crud->callback_field('is_fee',array($this,'_callback_is_fee'));
             
             // Fields
-            $crud->fields('type','name','subject','speakers','synopsis','description','open_date','close_date','registration_fee','is_speaker','is_invitation','is_submit','photo','messages','location','status');
+            $crud->fields('type','name','subject','speakers','synopsis','description','open_date','close_date','registration_fee','is_speaker','is_invitation','is_submit','cover_photo','messages','location','status');
 			
             // Set custom field display
             $crud->field_type('type','dropdown',array('1' => 'Conference', '2' => 'Symposium','3'=>'Seminar','3'=>'Colloquium','4'=>'Workshop','5'=>'Roundtable')); 
@@ -94,10 +94,12 @@ class Conference extends Admin_Controller {
             $crud->field_type('added','hidden');
             $crud->field_type('modified','hidden');
             
-            //$this->db->last_query();
-            
+            if ($crud->getState() == 'gallery') {
+
+            }
+
             // Set upload field
-			$crud->set_field_upload('photo','uploads/conferences');
+			$crud->set_field_upload('cover_photo','uploads/conferences');
             $this->load($crud, 'Conferences');
         } catch (Exception $e) {
             show_error($e->getMessage() . ' --- ' . $e->getTraceAsString());
@@ -110,6 +112,15 @@ class Conference extends Admin_Controller {
      * 
      */
     
+
+    public function _callback_gallery ($value,$row) {
+        if ($row->id) { 
+            return '<a href="'.base_url(ADMIN).'/conference/gallery/index/'.$row->id.'" class="fancyframe iframe"><span class="btn btn-default btn-mini glyphicon glyphicon-camera"></span></a>'; 
+        } else { 
+            return 'Already Employed';
+        }
+    }
+
     public function _callback_is_fee ($value, $row) {
         return '<script>$("input[name="is_fee"]).click(function() { alert("asdf"); })</script>';
 		//return '<input type="text" maxlength="50" value="'.$value.'" name="is_fee">asdasdas';

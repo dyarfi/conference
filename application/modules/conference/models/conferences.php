@@ -27,7 +27,7 @@ class Conferences Extends CI_Model {
 
 						'registration_fee'	=> '',
 						
-						'photo'			=> '',
+						'cover_photo'			=> '',
 						
 						
 						'is_located'		=> 0,
@@ -72,7 +72,7 @@ class Conferences Extends CI_Model {
 				.'`is_speaker` tinyint(1) NOT NULL, '
 				.'`is_invitation` tinyint(1) NOT NULL, '
 				.'`registration_fee` varchar(256) NOT NULL, '
-				.'`photo` varchar(256) NOT NULL, '
+				.'`cover_photo` varchar(255) NOT NULL, '
 				.'`is_located` tinyint(1) NOT NULL, '
 				.'`is_related` tinyint(1) NOT NULL, '
                 .'`messages` TEXT NULL, '

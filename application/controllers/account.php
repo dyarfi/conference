@@ -245,8 +245,19 @@ class Account extends Public_Controller {
     }
     
     // Forgot password method
-    public function activation($code='') {
+    public function activation() {
     
+        // Get activation code
+        $confirm = base64_decode($this->input->get('confirm'));
+        $params  = explode("-:-",$confirm);
+        
+        // Set array for query
+        $activation['verify']   = $params[0];
+        $activation['email']    = $params[1];
+        
+        $active = $this->Participants->getActivation($activation);
+        //$activation_code = preg_split ("/\s+/","-:-",$confirm);
+        print_r($active);
         
     }
     

@@ -15,9 +15,9 @@
             <?php if($conference->synopsis) { ?>
                 <div class="lead"><?php echo $conference->synopsis;?></div><br/>
             <?php } ?>
-            <?php if($conference->photo) { ?> 
+            <?php if($conference->cover_photo) { ?> 
                 <div class="lead">
-                    <img class="img-thumbnail" src="<?php echo base_url('uploads/conferences').'/'.$conference->photo; ?>"/>
+                    <img class="img-thumbnail" src="<?php echo base_url('uploads/conferences').'/'.$conference->cover_photo; ?>"/>
                 </div>
             <?php } ?>
             <?php 
