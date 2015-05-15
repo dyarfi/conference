@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Speaker extends Admin_Controller {
+class Date extends Admin_Controller {
 
     /**
      * Index Page for this controller.
@@ -45,16 +45,16 @@ class Speaker extends Admin_Controller {
         try {
 			// Set our Grocery CRUD
             $crud = new grocery_CRUD();
-			// Set query for Speaker
+			// Set query for Date
 			//$crud->where('group_id',100);
 			//$crud->where('tbl_users.status','1');
 			//$crud->where('tbl_user_profiles.status',1);
             // Set tables
-            $crud->set_table('tbl_speakers');
+            $crud->set_table('tbl_conference_dates');
 			// Handles the default primary key for a specific table. 
 			//$crud->set_primary_key('user_id','tbl_user_profiles');
             // Set CRUD subject
-            $crud->set_subject('Speaker'); 
+            $crud->set_subject('Date'); 
 			// Set table relation	
 			// set_relation_n_n( $field_name, $relation_table, $selection_table, $primary_key_alias_to_this_table, $primary_key_alias_to_selection_table, $title_field_selection_table [ , string $priority_field_relation )    
 			// $crud->set_relation_n_n('category', 'film_category', 'category', 'film_id', 'category_id', 'name');
@@ -77,7 +77,7 @@ class Speaker extends Admin_Controller {
 			// Set upload field
 			//$crud->set_field_upload('cv_file','uploads/applicants');
 			$crud->set_field_upload('photo','uploads/speakers');
-            $this->load($crud, 'Speakers');
+            $this->load($crud, 'Dates');
         } catch (Exception $e) {
             show_error($e->getMessage() . ' --- ' . $e->getTraceAsString());
         }
@@ -125,7 +125,7 @@ class Speaker extends Admin_Controller {
 			$objects->username = $objects->email;
 			// Set default password from 'Password1'
 			$objects->password = 'Password1';
-			// Set default group id for 'Speaker' group
+			// Set default group id for 'Date' group
 			$objects->group_id = '100';
 			// Set default file_name if existed
 			$objects->file_name = !empty($objects->photo) ? $objects->photo : NULL;
@@ -161,7 +161,7 @@ class Speaker extends Admin_Controller {
 
 				if ($user_id) {
 					$objects->user_id = $user_id;
-					$this->Applicants->setSpeakerId($objects);
+					$this->Applicants->setDateId($objects);
 				}
 			}
 		}
@@ -177,7 +177,7 @@ class Speaker extends Admin_Controller {
         $output->nav = $nav;
         if ($crud->getState() == 'list') {
             // Set Page Title 
-            $output->page_title = 'Speaker Listings';
+            $output->page_title = 'Date Listings';
             // Set Main Template
             $output->main       = 'template/admin/metronix';
             // Set Primary Template

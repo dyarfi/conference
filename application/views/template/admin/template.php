@@ -60,7 +60,7 @@
     <!-- BEGIN TOP NAVIGATION BAR -->
     <div class="header-inner">
 	<!-- BEGIN LOGO -->
-	<a class="navbar-brand" href="<?=base_url();?>" target="_blank"><img src="<?=base_url()?>assets/admin/img/logo_small.png" alt="logo" class="img-responsive col-md-7 col-lg-7"/></a>
+    <a class="navbar-brand text-success" href="<?=base_url();?>" target="_blank"><!--img src="<?=base_url()?>assets/admin/img/logo_small.png" alt="logo" class="img-responsive col-md-3 col-lg-3"/--> <strong>FISIP UIN JAKARTA</strong></a>
 	<!-- END LOGO -->
 	<!-- BEGIN RESPONSIVE MENU TOGGLER -->
 	<a href="javascript:;" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><img src="<?=base_url()?>assets/admin/img/menu-toggler.png" alt=""/></a>
@@ -72,7 +72,7 @@
 	    <!-- BEGIN USER LOGIN DROPDOWN -->
 	    <li class="dropdown user">
 		<a href="<?=base_url();?>admin/user/view/<?=Acl::user()->id;?>" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-		    <img alt="" src="<?=base_url()?>assets/admin/img/avatar1_small.jpg"/>&nbsp;
+		    <img alt="" src="<?=base_url()?>assets/admin/img/avatar_small.png"/>&nbsp;
 			<!--img height="28px" src="<?php //echo base_url('assets/public/img/'.$this->setting['site_logo']->value);?>"/>&nbsp;-->
 		    <span class="username"><?=Acl::user()->name;?></span>
 		    <i class="fa fa-angle-down"></i>

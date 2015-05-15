@@ -27,7 +27,7 @@ class Pages Extends CI_Model {
                 $sql	= 'CREATE TABLE IF NOT EXISTS `'.$this->table.'` ('
 				. '`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, '
 				. '`menu_id` INT(11) UNSIGNED NULL, '
-				. '`name` VARCHAR(255) NULL, '
+				. '`url` VARCHAR(255) NULL, '
 				. '`subject` VARCHAR(255) NULL, '
 				. '`synopsis` TEXT NULL, '
 				. '`text` TEXT NULL, '
@@ -42,7 +42,7 @@ class Pages Extends CI_Model {
 				. '`status` ENUM( \'publish\', \'unpublish\', \'deleted\' ) NULL DEFAULT \'publish\', '
 				. '`added` INT(11) NULL, '
 				. '`modified` INT(11) NULL, '
-				. 'INDEX (`menu_id`, `name`, `publish_date`, `unpublish_date`, `allow_comment`, `order`) '
+				. 'INDEX (`menu_id`, `url`, `publish_date`, `unpublish_date`, `allow_comment`, `order`) '
 				. ') ENGINE=MYISAM DEFAULT CHARSET=utf8;';
 
 		$this->db->query($sql);
@@ -83,10 +83,10 @@ class Pages Extends CI_Model {
 		}
 	}	
 	
-	public function getPageByName($name = null){
-		if(!empty($name)){
+	public function getPageByUrl($url = null){
+		if(!empty($url)){
 			$data = array();
-			$options = array('name' => $name,'status'=>'publish');
+			$options = array('url' => $url,'status'=>'publish');
 			$Q = $this->db->get_where($this->table,$options,1);
 			if ($Q->num_rows() > 0){
 				foreach ($Q->result_object() as $row)
@@ -116,7 +116,7 @@ class Pages Extends CI_Model {
 		// Set Page data
 		$data = array(			
 			'category_id'	=> $object['category_id'],
-			'name'			=> $object['name'],
+			'url'			=> $object['url'],
 			'subject'		=> $object['subject'],
 			'synopsis'		=> $object['synopsis'],
 			'text'			=> $object['text'],

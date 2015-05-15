@@ -49,16 +49,10 @@
                         </div>
                         <small class="text-danger"><?php echo $errors['email_register'];?></small>
                     </div>
-                    <div class="form-group">
+                    <!--div class="form-group">
                         <label class="control-label" for="gender">Gender</label>
                         <div class="input-group">
-                            <!--
-                            Male <input type="radio" class="" id="gender" name="gender" value="<?php echo set_value('gender', $fields['gender']) ?>" placeholder="Enter gender" required="required" />
-                            &nbsp;&nbsp;
-                            Female <input type="radio" class="" id="gender" name="gender" placeholder="Enter gender" required="required" />
-                            -->
                             <span class="input-group-addon"><span class="glyphicon glyphicon-adjust"></span></span>
-                        
                             <select class="form-control" name="gender">
                             <?php foreach ($genders as $gender => $gen) {?>
                                 <option value="<?php echo $gender;?>" <?php echo ($gender == $fields['gender']) ? 'selected' : '';?>><?php echo $gen;?></option>
@@ -66,19 +60,19 @@
                             </select>
                         </div>
                         <small class="text-danger"><?php echo $errors['gender'];?></small>
-                    </div>
-                    <div class="form-group">
+                    </div-->
+                    <!--div class="form-group">
                         <label class="control-label" for="phone_number">Phone Number</label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-phone"></span></span>
                             <input type="text" class="form-control" id="phone_number" name="phone_number" value="<?php echo set_value('phone_number', $fields['phone_number']) ?>" placeholder="Enter phone number" required="required" />
                         </div>
                         <small class="text-danger"><?php echo $errors['phone_number'];?></small>
-                    </div>
+                    </div-->
                     <div class="form-group">
                         <label class="control-label" for="captcha">
                             Captcha <a class="reload_captcha tooltips" title="Reload Captcha" data-placement="right" rel="<?=base_url()?>account/reload_captcha" href="javascript:;">
-                            <?php echo $captcha['image'];?></a><small class="text-danger">&nbsp; Captcha expired in 60 Seconds.</small>
+                            <?php echo $captcha['image'];?></a><!--small class="text-danger">&nbsp; Captcha expired in 60 Seconds.</small-->
                         </label>
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-info-sign"></span></span>

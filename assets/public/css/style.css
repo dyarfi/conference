@@ -86,7 +86,7 @@ a:focus {
 .capitalize { text-transform: capitalize; }
 
 #main {
-    margin: 110px 0 0 0;
+    padding: 110px 0 0 0;
 }
 #main .page-header {
     margin-top: 8px
@@ -124,7 +124,9 @@ a:focus {
 
 
 
-
+.thumbnail .caption {
+    padding: 0px 9px;
+}
 
 .nav.navbar-nav {
     margin: 6px 0 0 0;
@@ -1312,15 +1314,32 @@ form#contact-form input:focus,form#contact-form select:focus,form#contact-form t
 .company-social .social-vimeo a:hover{background: #71c6f3;}
 
 
+.back-top:active,.back-top:focus {
+    outline: none;
+}
 
+.back-top {
+    -moz-transition: background 0.3s ease 0s;
+    /*background: none repeat scroll 0 0 #FFFFFF;*/
+    border-radius: 3px 3px 3px 3px;
+    bottom: 15px;
+    /*color: #000000 !important;*/
+    cursor: pointer;
+    display: block;
+    font-size: 25px;
+    line-height: 20px;
+    padding: 0 6px 4px;
+    position: fixed;
+    right: 40px;
+    z-index: 10;
+}
 /* ===========================
 --- Footer
 ============================ */
 
 footer {
 	text-align: center;
-	padding: 10px 0;
-	
+	padding: 20px 0;
 }
 
 footer p {

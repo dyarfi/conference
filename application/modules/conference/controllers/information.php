@@ -46,13 +46,13 @@ class Information extends Admin_Controller {
             // Set table relation
             $crud->set_relation('conference_id', 'tbl_conferences', 'subject');
             // Set column
-            $crud->columns('subject','name','conference_id','cover','status');   
+            $crud->columns('subject','url','conference_id','cover','status');   
             // Unsets the fields at the add form.
 			$crud->unset_add_fields('count','added','modified');
 			// Unsets the fields at the edit form.
 			$crud->unset_edit_fields('count','added','modified');
 			// Sets the required fields of add and edit fields
-			$crud->required_fields('subject','name','conference_id','status');          
+			$crud->required_fields('subject','url','conference_id','status');          
 			// Set column display 
             $crud->display_as('conference_id', 'Conference');
 			// Set custom field display for status

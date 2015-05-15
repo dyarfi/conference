@@ -4,7 +4,7 @@
 class Attachments Extends CI_Model {
     
 	// Table name for this model
-	protected $table = 'participant_attachments';
+	protected $table = 'participant_attachment_submissions';
 	
 	public function __construct(){
 	    // Call the Model constructor
@@ -27,7 +27,7 @@ class Attachments Extends CI_Model {
 	    $sql	= 'CREATE TABLE IF NOT EXISTS `'.$this->table.'` ('
 			    . '`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, '
 			    . '`part_id` INT(11) UNSIGNED NULL, '
-			    . '`name` VARCHAR(255) NULL, '
+			    . '`url` VARCHAR(255) NULL, '
 			    . '`title` VARCHAR(255) NULL, '
 			    . '`file_name` TEXT NULL, '
 			    . '`count` INT(11) NULL , '	
@@ -52,18 +52,32 @@ class Attachments Extends CI_Model {
 	}
 	
 	public function getCount($status = null){
-	    $data = array();
-	    $options = array(); 
-	    if ($status) {
-		$options = array('status' => $status);
-	    }
-	    $this->db->where($options,1);
-	    $this->db->from($this->table);
-	    $data = $this->db->count_all_results();
+        $data = array();
+        $options = array(); 
+        if ($status) {
+            $options = array('status' => $status);
+        }
+        $this->db->where($options,1);
+        $this->db->from($this->table);
+        $data = $this->db->count_all_results();
 	    return $data;
 	}
-	
-	public function getImage($id = null){
+    
+	public function getParticipantAttachment($participant_id = null){
+	    if(!empty($participant_id)){
+            $data = array();
+            $options = array('participant_id' => $participant_id);
+            $Q = $this->db->get_where($this->table,$options,1);
+            if ($Q->num_rows() > 0){
+                foreach ($Q->result_object() as $row)
+                $data = $row;
+            }
+            $Q->free_result();
+		return $data;
+	    }
+	}
+    
+	public function getAttachment($id = null){
 	    if(!empty($id)){
 		$data = array();
 		$options = array('id' => $id);
@@ -77,7 +91,7 @@ class Attachments Extends CI_Model {
 	    }
 	}	
 	
-	public function getAllImage($admin=null){
+	public function getAllAttachment($admin=null){
 	    $data = array();
 	    $this->db->order_by('added');
 	    $Q = $this->db->get($this->table);
@@ -91,12 +105,12 @@ class Attachments Extends CI_Model {
 	    return $data;
 	}	
 	
-	public function setImage($object=null){
+	public function setAttachment($object=null){
 
-	    // Set Image data
+	    // Set Attachment data
 	    $data = array(	
 		    'part_id'   => $object['part_id'],
-		    'name'	=> $object['name'],
+		    'url'	=> $object['url'],
 		    'title'	=> $object['title'],
 		    'count'	=> $object['count'],
 		    'status'    => $object['status'],
@@ -104,7 +118,7 @@ class Attachments Extends CI_Model {
 		    'modified'  => $object['status']
 	    );
 
-	    // Insert Image data
+	    // Insert Attachment data
 	    $this->db->insert($this->table, $data);
 
 	    // Return last insert id primary
@@ -116,7 +130,7 @@ class Attachments Extends CI_Model {
 	}	
 	
 	// Delete Participant
-	public function deleteImage($id) {
+	public function deleteAttachment($id) {
 		
 	    // Check Participant id
 	    $this->db->where('id', $id);

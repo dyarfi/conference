@@ -84,7 +84,7 @@ class Participants Extends CI_Model {
 				foreach ($Q->result_object() as $row)
 				$data = $row;
 			}
-            print_r($data);
+            //print_r($data);
 			$Q->free_result();
 			return $data;
 		}
@@ -211,7 +211,7 @@ class Participants Extends CI_Model {
 		    }
 		} 			 
         
-        print_r($data);
+        //print_r($data);
         
 
 		$Q->free_result();

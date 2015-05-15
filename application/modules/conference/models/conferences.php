@@ -13,7 +13,7 @@ class Conferences Extends CI_Model {
 						'id'			=> 0,
 						'type'			=> '',
 
-						'name'			=> '',
+						'url'			=> '',
 						'subject'		=> '',
 						'description'	=> '',
 						
@@ -61,9 +61,10 @@ class Conferences Extends CI_Model {
 		$sql	= 'CREATE TABLE IF NOT EXISTS `'.$this->table.'` ('
 				.'`id` int(11) NOT NULL AUTO_INCREMENT, '
 				.'`type` int(11) NOT NULL, '
-				.'`name` varchar(128) NOT NULL, '
-				.'`subject` varchar(128) NOT NULL, '
-                .'`synopsis` TEXT NULL, '
+                .'`name` varchar(255) NOT NULL, '
+				.'`subject` varchar(255) NOT NULL, '
+                .'`url` varchar(255) NOT NULL, '
+				.'`synopsis` TEXT NULL, '
 				.'`description` TEXT NULL, '
 				.'`open_date` int(32) NOT NULL, '
 				.'`close_date` char(32) NOT NULL, '

@@ -41,7 +41,7 @@
 <!-- BEGIN LOGO -->
 <div class="logo">
     <a href="<?php echo base_url();?>">
-	<img src="<?=base_url()?>assets/admin/img/dentsu.png" alt=""/>
+	<img src="<?=base_url()?>assets/admin/img/logo.png" alt=""/>
     </a>
 </div>
 <!-- END LOGO -->

@@ -1,8 +1,8 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 // Developers Name
-$config['developer_name']	= 'Dentsu Digital Division'; 
-$config['developer_url']	= 'http://dentsu.digital/';
+//$config['developer_name']	= 'Dentsu Digital Division'; 
+//$config['developer_url']	= 'http://dentsu.digital/';
 
 // Upload PATH and URL
 $config['upload_path']		= BASEPATH.'uploads/users/';

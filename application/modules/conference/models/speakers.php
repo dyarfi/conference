@@ -12,7 +12,7 @@ class Speakers Extends CI_Model {
 		$this->_model_vars	= array(
 						    'id'		=> 0,
 						    'conference_id'	=> 0,
-						    'name'			=> '',
+						    'url'			=> '',
 						    'subject'		=> '',
                             'nationality_id'=> '',
                             'research_area' => '',
@@ -40,7 +40,7 @@ class Speakers Extends CI_Model {
 		$sql	= 'CREATE TABLE IF NOT EXISTS `'.$this->table.'` ('
 				. '`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, '
 				. '`conference_id` INT(11) UNSIGNED NULL, '
-				. '`name` VARCHAR(255) NULL, '
+				. '`url` VARCHAR(255) NULL, '
 				. '`subject` VARCHAR(255) NULL, '
                 . '`nationality_id` INT(11) NULL, '
                 . '`research_area` VARCHAR(255) NULL, '
@@ -140,7 +140,7 @@ class Speakers Extends CI_Model {
 		// Set User data
 		$data = array(			
 				'conference_id'	=> @$object['conference_id'],
-                'name'			=> @$object['name'],
+                'url'			=> @$object['url'],
                 'subject'		=> @$object['subject'],
                 'nationality_id'=> @$object['nationality_id'],
                 'research_area' => @$object['research_area'],

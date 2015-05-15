@@ -27,7 +27,7 @@ class Gallery Extends CI_Model {
 	    $sql	= 'CREATE TABLE IF NOT EXISTS `'.$this->table.'` ('
 			    . '`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, '
 			    . '`conference_id` INT(11) UNSIGNED NULL, '
-			    . '`name` VARCHAR(255) NULL, '
+			    . '`url` VARCHAR(255) NULL, '
 			    . '`title` VARCHAR(255) NULL, '
 			    . '`file_name` TEXT NULL, '
 			    . '`priority` INT(11) DEFAULT NULL, '
@@ -35,7 +35,7 @@ class Gallery Extends CI_Model {
 			    . '`status` TINYINT(1) NULL DEFAULT 1, '
 			    . '`added` INT(11) NULL, '
 			    . '`modified` INT(11) NULL, '
-			    . 'INDEX (`conference_id`, `name`) '
+			    . 'INDEX (`conference_id`, `url`) '
 			    . ') ENGINE=MYISAM DEFAULT CHARSET=utf8;';
 
 	    $this->db->query($sql);

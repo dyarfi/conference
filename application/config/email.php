@@ -10,7 +10,7 @@
   */                       
 $config['useragent']        = 'CodeIgniter';        
 $config['protocol']         = 'mail';        
-$config['mailpath']         = '/usr/sbin/sendmail';
+$config['mailpath']         = '/usr/sbin/sendmail -bs';
 $config['smtp_host']        = '';
 $config['smtp_user']        = '';
 $config['smtp_pass']        = '';

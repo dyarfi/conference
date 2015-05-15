@@ -358,7 +358,7 @@ $config['proxy_ips'] = '';
 
 // Developers Name and website
 $config['developer_name']	= 'FISIP UIN Jakarta'; 
-$config['developer_url']	= 'http://dentsu.digital/';
+$config['developer_url']	= 'http://fisip.uinjkt.ac.id/';
 
 // TRUE for site is open or FALSE for maintenance mode
 $config['site_open']		= TRUE;
@@ -367,7 +367,6 @@ $config['site_open']		= TRUE;
 $config['modules_locations'] = array(
         APPPATH.'modules/' => '../modules/'
     );
-
 /* End of file config.php */
 
 /* Location: ./application/config/config.php */

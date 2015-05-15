@@ -13,7 +13,7 @@ class Schedules Extends CI_Model {
 						    'id'	=> 0,
 						    
 						    'conference_id'	=> 0,
-						    'name'			=> '',
+						    'url'			=> '',
 						    'subject'		=> '',
 						    'description'	=> '',
 
@@ -39,14 +39,14 @@ class Schedules Extends CI_Model {
 		$sql	= 'CREATE TABLE IF NOT EXISTS `'.$this->table.'` (
 				  `id` int(11) NOT NULL AUTO_INCREMENT,
 				  `conference_id` INT(11) UNSIGNED NULL,
-				  `name` VARCHAR(255) NULL, 
+				  `url` VARCHAR(255) NULL, 
 				  `subject` VARCHAR(255) NULL, 
 				  `description` text NOT NULL,
 				  `is_system` tinyint(1) NOT NULL DEFAULT \'1\',
 				  `status` ENUM(\'publish\', \'unpublish\', \'deleted\') NULL DEFAULT \'publish\', 
 				  `added` int(11) NOT NULL,
 				  `modified` int(11) NOT NULL, 
-				  INDEX (`name`, `status`), 
+				  INDEX (`url`, `status`), 
 				  PRIMARY KEY (`id`)
 				) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=11;';
 				
@@ -57,7 +57,7 @@ class Schedules Extends CI_Model {
 			$insert_data	= TRUE;
 		
 		if ($insert_data) {
-			$sql	 = 'INSERT INTO `'.$this->table.'` (`id`, `name`, `subject`, `description`, `is_system`, `status`, `added`, `modified`)'
+			$sql	 = 'INSERT INTO `'.$this->table.'` (`id`, `url`, `subject`, `description`, `is_system`, `status`, `added`, `modified`)'
 					. 'VALUES (12, \'human-resources\', \'Human Resources\', \'Lorem Ipsum Dolor Sit Amet\', 1, \'publish\', '.time().', 0),'
 					. '(13, \'creative\', \'Creative\', \'Lorem Ipsum Dolor Sit Amet\', 1, \'publish\', '.time().', 0);';
 

@@ -13,10 +13,11 @@ class Account extends Public_Controller {
 		
 		// Load Participant related model 
 		$this->load->model('participant/Participants');
+        $this->load->model('participant/Attachments');
         
 		// Load Conference model 
 		$this->load->model('conference/Conferences');
-        			
+           			
 	}
 	
 	public function index() {
@@ -95,19 +96,19 @@ class Account extends Public_Controller {
         $data['conference'] = $conference;
         
         // Captcha data
-        $data['captcha']		= $this->Captcha->image();
+        $data['captcha']	= $this->Captcha->image();
 
 		// Set error data to view
-		$data['errors'] = $errors;
+		$data['errors']     = $errors;
 
 		// Post Fields
-		$data['fields']	= $fields;
+		$data['fields']     = $fields;
 		
         // Set gender data
         $data['genders']    = config_item('gender');
 
 		// Set main template
-		$data['main'] = 'account';
+		$data['main']       = 'account';
 				
 		// Set site title page with module menu
 		$data['page_title'] = 'Account';
@@ -123,15 +124,15 @@ class Account extends Public_Controller {
         $fields	= array(
                         'fullname'       => '',
                         'email_register' => '',
-						'gender'         => '',
-                        'phone_number'   => '',
+						//'gender'         => '',
+                        //'phone_number'   => '',
                         'captcha'        => '');
 
         $errors	= $fields;
         $this->form_validation->set_rules('fullname', 'Full Name', 'trim|required|min_length[5]|max_length[32]|xss_clean');
 		$this->form_validation->set_rules('email_register', 'Email','trim|valid_email|required|max_length[55]|callback_match_email|xss_clean');
-        $this->form_validation->set_rules('gender', 'Gender','trim|required');		
-        $this->form_validation->set_rules('phone_number', 'Phone Number','trim|is_numeric|xss_clean|max_length[25]');
+        //$this->form_validation->set_rules('gender', 'Gender','trim|required');		
+        //$this->form_validation->set_rules('phone_number', 'Phone Number','trim|is_numeric|xss_clean|max_length[25]');
         $this->form_validation->set_rules('captcha', 'Captcha Code','trim|required|xss_clean|callback_match_captcha');
 		
         // Check if post is requested
@@ -164,11 +165,11 @@ class Account extends Public_Controller {
 				
                 $object['email']           = $this->input->get_post('email_register', true);
 				$object['name']            = $this->input->get_post('fullname', true);
-                $object['gender']          = $this->input->get_post('gender', true);
-				$object['phone_number']    = $this->input->get_post('phone_number', true);
+                //$object['gender']          = $this->input->get_post('gender', true);
+				//$object['phone_number']    = $this->input->get_post('phone_number', true);
 				$object['verify']          = $this->input->get_post('captcha', true);
-                $object['status']          = 0;
-                $object['completed']       = 0;
+                $object['status']          = '0';
+                $object['completed']       = '0';
 				
                 $return = $this->Participants->setParticipant($object);
 				
@@ -176,9 +177,10 @@ class Account extends Public_Controller {
 
                     $this->load->library('email');
 
-                    $this->email->from('noreply@localhost');
+                    $this->email->from('noreply@simplewavenet.com');
                     $this->email->to($object['email']);
-                    $this->email->subject('Account Activation');
+                    $this->email->reply_to('noreply@simplewavenet.com');
+                    $this->email->subject('Account Activation | FISIP UIN Jakarta');
                     $this->email->message('Hey <b>'.$object['name'].'</b>, please confirm your account by clicking this <a href="'.base_url('account/activation?confirm='.base64_encode($object['verify'].'-:-'.$object['email']).'').'">link</a>, thank you');
 
                     $this->email->send();
@@ -204,16 +206,16 @@ class Account extends Public_Controller {
         $data['captcha'] = $this->Captcha->image();
 
 		// Set error data to view
-		$data['errors'] = $errors;
+		$data['errors']  = $errors;
         
         // Post Fields
-		$data['fields']	= $fields;
+		$data['fields']	 = $fields;
         
         // Set gender data
         $data['genders'] = config_item('gender');
 
 		// Set main template
-		$data['main'] = 'account';
+		$data['main']    = 'account';
 				
 		// Set site title page with module menu
 		$data['page_title'] = 'Account';
@@ -232,6 +234,9 @@ class Account extends Public_Controller {
         
         // Get Participant Conferences
         $data['part_conferences'] = $this->Participants->getConferences($conference->id,$this->participant->id);
+        
+        // Get Participant Attachments
+        $data['part_attachments'] = $this->Attachments->getParticipantAttachment($conference->id,$this->participant->id);
         
         // Set main template
 		$data['main'] = 'dashboard';
@@ -256,8 +261,7 @@ class Account extends Public_Controller {
         $activation['email']    = $params[1];
         
         $active = $this->Participants->getActivation($activation);
-        //$activation_code = preg_split ("/\s+/","-:-",$confirm);
-        print_r($active);
+        redirect(base_url());
         
     }
     

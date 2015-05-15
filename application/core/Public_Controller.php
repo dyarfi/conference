@@ -2,7 +2,7 @@
 
 class Public_Controller extends MY_Controller {
 	
-    var $participants = array();
+    var $participant = '';
     
     function __construct() {
 		
@@ -47,8 +47,23 @@ class Public_Controller extends MY_Controller {
         // Set participant session objects
         $this->participant = $this->session->userdata('participant');
         
+        // Get user login status
+		self::getUserStatus();				
+        
+        //print_r($this->session->userdata);
     }
-	
+    
+	protected function getUserStatus() {
+		
+		// Get value from participant login
+		if (empty($this->participant)) {
+			// Redirect to home if not login
+            //redirect(base_url('account/dashboard'));
+			
+		}
+		
+	}
+    
 	protected function getSiteStatus() {
 		
 		// Get value from tbl_configurations for maintenance

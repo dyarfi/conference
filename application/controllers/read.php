@@ -1,13 +1,13 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Home extends Public_Controller {
+class Read extends Public_Controller {
     
 	public function __construct() {
 		parent::__construct();
-		
+				
 		// Load Setting data
 		$this->load->model('admin/Settings');
-		
+
 		// Load User related model in admin module
 		$this->load->model('page/Pagemenus');
 		$this->load->model('page/Pages');
@@ -22,8 +22,28 @@ class Home extends Public_Controller {
 	}
 	
 	public function index() {
-        
-		// Set site title page with module menu
+        // Redirect to home
+        redirect(base_url());
+	}
+	
+	public function menu ($menu='') {
+		
+		// Set menu data
+		$data['menu'] = $menu;
+		
+		// Set pages data
+		$data['pages'] = $this->Pagemenus->getPagesByMenu($menu);
+		//exit('asdf');
+		// Set main template
+		$data['main'] = 'home';
+		
+		// Load admin template
+		$this->load->view('page', $this->load->vars($data));
+	}
+	
+	public function page ($page='') {
+		
+        	// Set site title page with module menu
 		$data['page_title'] = $this->config->item('developer_name') .' | '. $this->Settings->getByParameter('title_default')->value;
 		
 		// Get latest conference
@@ -59,14 +79,15 @@ class Home extends Public_Controller {
 		// Set contactus address info data
 		$data['contactus_address']	= $this->Settings->getByParameter('contactus_address');		
 		
+		// Set pages data
+		$data['page'] = $this->Pages->getPageByName($page);
+		
 		// Set main template
-		$data['main'] = 'home';
+		$data['main'] = 'page';
 		
-		// Load site template
-		$this->load->view('template/public/template', $this->load->vars($data));		
-		
+		// Load admin template
+		$this->load->view('template/public/template', $this->load->vars($data));
 	}
-	
 }
 
 /* End of file user.php */

@@ -21,13 +21,16 @@ class Attachment extends Admin_Controller {
 			// Set our Grocery CRUD
             $crud = new grocery_CRUD();
             // Set tables
-            $crud->set_table('tbl_participant_attachments');
+            $crud->set_table('tbl_participant_attachment_submissions');
             // Set CRUD subject
             $crud->set_subject('Attachment');                            
             // Set table relation
             $crud->set_relation('participant_id','tbl_participants','name');
+            // Set table relation
+            $crud->set_relation('conference_submission_id','tbl_submissions','subject');
+            
             // Set column
-			$crud->columns('type', 'participant_id','file_name','status','added','modified');
+			$crud->columns('title', 'participant_id','conference_submission_id','file_name','status','added','modified');
 			
             //$crud->columns('subject','name','menu_id','synopsis','text','status','added','modified');			
 			// The fields that user will see on add and edit form
@@ -46,8 +49,7 @@ class Attachment extends Admin_Controller {
 			// This callback escapes the default auto column output of the field name at the add form
 			
 			$crud->field_type('status','dropdown',array('0' => 'Inactive','1' => 'Active','2' => 'Completed')); 
-			$crud->field_type('type','dropdown',array('16' => 'Stiker 16', '2' => 'Stiker 2'));
-			$crud->field_type('file_name','text');
+			//$crud->field_type('file_name','text');
 			$crud->edit_fields('status','modified');			
 			$crud->callback_column('added',array($this,'_callback_time'));
 			$crud->callback_column('modified',array($this,'_callback_time'));
@@ -67,7 +69,8 @@ class Attachment extends Admin_Controller {
 				$crud->callback_field('modified',array($this,'_callback_time_modified'));				
 			}
 			
-			// $crud->set_field_upload('file_name','uploads/Attachment');
+			$crud->set_field_upload('file_name','uploads/participants');
+            
 			// $crud->callback_column('modified',array($this,'_callback_time'));  
 			// Sets the required fields of add and edit fields
 			// $crud->required_fields('subject','name','text','status'); 
@@ -98,11 +101,11 @@ class Attachment extends Admin_Controller {
 	
 	public function _callback_filename($value, $row) {
 		$row->file_name = strip_tags($row->file_name);
-        return '<div class="text-center"><a href="'.base_url('uploads/Attachment/'.$row->file_name).'" class="image-thumbnail"><img height="110px" src="'.base_url('uploads/Attachment/'.$row->file_name).'"/></a></div>';
+        return '<div class="text-center"><a target="_blank" href="'.base_url('uploads/attachments/'.$row->file_name).'">'.$row->file_name.'</a></div>';
     }
 	
 	public function _callback_filename_url($value, $row) {
-		return ($row->file_name) ? base_url('uploads/users/'.$row->file_name) : '-';
+		return ($row->file_name) ? base_url('uploads/attachments/'.$row->file_name) : '-';
 	}
 	
     public function _callback_total_image($value, $row) {

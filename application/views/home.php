@@ -1,7 +1,7 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed'); ?>
 
 <!-- Section: intro -->
-<section id="intro" data-speed="0.2" class="intro parallax-window" data-parallax="scroll" data-image-src="">
+<div id="intro" data-speed="0.2" class="intro parallax-window" data-parallax="scroll" data-image-src="">
     <!--div class="page-scroll wow">
 		<a href="#service" class="btn btn-circle wow animated bounceInUp" data-wow-delay="0.1s">
 		    <i class="fa fa-angle-double-down animated"></i>
@@ -17,7 +17,7 @@
             <?php } ?>
             <?php if($conference->cover_photo) { ?> 
                 <div class="lead">
-                    <img class="img-thumbnail" src="<?php echo base_url('uploads/conferences').'/'.$conference->cover_photo; ?>"/>
+                    <img class="img-thumbnail" width="100%" src="<?php echo base_url('uploads/conferences').'/'.$conference->cover_photo; ?>"/>
                 </div>
             <?php } ?>
             <?php 
@@ -58,17 +58,17 @@
                 </div>
             </div>
     </div>
-</section>
+</div>
 <!-- /Section: intro -->
 
 <?php if ($informations) { ?>
-<section id="information">
+<div id="information">
 	<h3 class="text-center">Information</h3>
 	<div class="row-fluid clearfix">
 		<div class="col-lg-12 col-md-12 col-sm-12 column">
 			<div class="row-fluid">
 
-				<div class="row-fluid control-handler">
+				<!--div class="row-fluid control-handler">
 					<div class="pull-right clearfix">
 						<a class="right carousel-control" href="#myCarousel3" data-slide="prev">
 							<span class="glyphicon glyphicon-backward">PREV</span>
@@ -77,7 +77,7 @@
 							<span class="glyphicon glyphicon-play">NEXT</span>
 						</a>
 					</div>	
-				</div>	
+				</div-->	
 					
 				<div id="myCarousel3" class="carousel-bot slide" data-ride="carousel">
 					<div class="carousel-inner">
@@ -87,19 +87,18 @@
 									<div class="thumbnail">
 										<div class="thumb-holder">
 											<?php if ($information->cover) { ?>
-												<div style="max-width:100%;height:180px;overflow:hidden;margin:0 auto 10px auto" class="img-rounded"><img class="img-responsive" src="<?php echo base_url('uploads/informations').'/'.$information->cover;?>"/></div>
+                                                <div style="max-width:100%;height:180px;overflow:hidden;margin:0 auto 10px auto" class="img-rounded">
+                                                    <img width="100%" class="img-responsive" src="<?php echo base_url('uploads/informations').'/'.$information->cover;?>"/>
+                                                </div>
 											<?php } ?>
 										</div>
 										<div class="caption">
-											<h4><?php echo $information->subject;?></h4>
+											<h5><?php echo $information->subject;?></h5>
 											<!--div class="clearfix history btn-sm">
 												<span class="pull-left"><span class="glyphicon glyphicon-time"></span> 03 DEC 2014</span>
 												<span class="pull-right"><span class="glyphicon glyphicon-edit"></span> JANE DOE</span>
 											</div-->
-											<div><?php echo word_limiter(strip_tags($information->description,'<strong><b>'));?></div>
-											<div>
-												<a class="btn-link" href="<?php echo base_url('information') .'/'. $information->name;?>">Read More</a>
-											</div>
+											<div class="marginbot-30"><?php echo word_limiter(strip_tags($information->description,'<strong><b><a><table><tbody><tr><td>'));?></div>
 										</div>
 									</div>
 								</div>
@@ -111,143 +110,54 @@
 			</div>
 		</div>
 	</div>
-</section>	
+</div>	
 <?php } ?>
 
-<?php if ($speakers) { ?>
-<section id="speakers">
+<?php if ($submission) { ?>
+<div id="submission" class="marginbot-30 clearfix boxed-grey">
 	<div class="container">
 		<div class="col-lg-12 col-md-12 col-sm-12">
-			<h3 class="text-center">Speakers</h3>
-			<?php foreach ($speakers as $speaker) { ?>
-				<div class="col-lg-4 col-md-4 col-sm-4">
-					<h5><?php echo $speaker->subject;?></h5>
-					<?php if ($speaker->photo) { ?>
-						<div style="max-width:100%;height:180px;overflow:hidden;margin:0 auto 10px auto" class="img-rounded"><img class="img-responsive" src="<?php echo base_url('uploads/speakers').'/'.$speaker->photo;?>"/></div>
+			<h3 class="text-center page-header">Submission</h3>
+			<?php foreach ($submission as $submiss) { ?>
+				<div class="col-lg-6 col-md-6 col-sm-6">
+					<h5><?php echo $submiss->subject;?></h5>
+					<?php if ($submiss->photo) { ?>
+						<div style="max-width:100%;height:180px;overflow:hidden;margin:0 auto 10px auto" class="img-rounded"><img class="img-responsive" src="<?php echo base_url('uploads/speakers').'/'.$submiss->photo;?>"/></div>
 					<?php } ?>
 					<div class="text-left">
-						<?php echo word_limiter(strip_tags($speaker->biography,'<strong><b>'));?>
-						<a class="" href="<?php echo base_url('information') .'/'. $speaker->name;?>">Detail</a>
+						<?php echo word_limiter(strip_tags($submiss->description,'<strong><b><a><table><tbody><tr><td>'));?>
 					</div>
 				</div>
 			<?php } ?>
 		</div>
 	</div>
-</section>	
+</div>	
 <?php } ?>
 
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-	<div class="modal-content">
-	  <div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-		<h4 class="modal-title" id="myModalLabel">We're hiring!</h4>
-	  </div>
-	  <div class="modal-body">
-
-	<div class="vacancy-list-holder clearfix">
-		<div class="col-sm-3 col-md-3">
-			<div class="service-box">
-				<div class="service-desc">
-					<h5>Account Manager</h5>
-					<p>Vestibulum tincidunt enim in pharetra malesuada. Duis semper magna metus electram accommodare.</p>
+<?php if ($speakers) { ?>
+<!--<div id="speakers">-->
+<div id="speakers" class="marginbot-30">
+	<div class="container">
+		<div class="col-lg-12 col-md-12 col-sm-12">
+			<h3 class="text-center page-header">Speakers</h3>
+			<?php foreach ($speakers as $speaker) { ?>
+                <div class="col-lg-4 col-md-4 col-sm-4">
+					<h5 class="text-center"><?php echo $speaker->subject;?></h5>
+					<?php if ($speaker->photo) { ?>
+                    <div class="marginbot-10 img-rounded" style="max-width:100%;height:180px;overflow:hidden;margin:0 auto 10px auto"><img width="100%" class="center-block" src="<?php echo base_url('uploads/speakers').'/'.$speaker->photo;?>"/></div>
+					<?php } else { ?>
+                    <div class="boxed-grey"><div class="center-block"><span class="fa fa-user fa-5x clearfix"></span></div></div>
+                    <?php } ?>
+                    <?php if ($speaker->biography) { ?>
+					<div class="content">
+						<?php echo word_limiter(strip_tags($speaker->biography,'<strong><b><br><p>'));?>
+					</div>
+                    <?php } ?>                    
 				</div>
-				<a href="<?=base_url();?>vacancy/apply" data-fancybox-type="ajax" class="btn btn-danger btn-sm apply-btn"/>Apply</a>
+            <?php } ?>
+		</div>
 	</div>
-    </div>
-		<div class="col-sm-3 col-md-3">
-	<div class="service-box">
-				<div class="service-desc">
-					<h5>Creative Director</h5>
-					<p>Vestibulum tincidunt enim in pharetra malesuada. Duis semper magna metus electram accommodare.</p>
-				</div>
-				<a href="<?=base_url();?>vacancy/apply" data-fancybox-type="ajax" class="btn btn-danger btn-sm apply-btn"/>Apply</a>
-	</div>
-    </div>
-		<div class="col-sm-3 col-md-3">
-	<div class="service-box">
-				<div class="service-desc">
-					<h5>System Analyst</h5>
-					<p>Vestibulum tincidunt enim in pharetra malesuada. Duis semper magna metus electram accommodare.</p>
-				</div>
+</div>	
+<?php } ?>
 
-				<a href="<?=base_url();?>vacancy/apply" data-fancybox-type="ajax" class="btn btn-danger btn-sm apply-btn"/>Apply</a>
-	</div>
-    </div>
-		<div class="col-sm-3 col-md-3">
-	<div class="service-box">
-				<div class="service-desc">
-					<h5>Cloud System</h5>
-					<p>Vestibulum tincidunt enim in pharetra malesuada. Duis semper magna metus electram accommodare.</p>
-				</div>
 
-				<a href="<?=base_url();?>vacancy/apply" data-fancybox-type="ajax" class="btn btn-danger btn-sm apply-btn"/>Apply</a>
-	</div>
-    </div>
-	</div>  
-
-		  <div class="vacancy-form-holder">
-				<div class="boxed-grey">							
-					<h4>Apply vacancy for <span class="vacancy-title"></span>
-				   <a href="javascript:;" class="btn btn-link btn-sm pull-right back">back <span class="fa fa-chevron-right"></span></a>
-				  </h4>				
-				  <form id="vacancy-form" action="" class="" method="POST">
-					  <div class="row">
-						  <div class="col-md-6">
-							  <div class="form-group">
-								  <label for="name">Name</label>
-								  <input type="text" class="form-control" id="name" placeholder="Enter name" required="required" />
-							  </div>
-							  <div class="form-group">
-								  <label for="email">Email Address</label>
-								  <div class="input-group">
-									  <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span>
-									  </span>
-									  <input type="email" class="form-control" id="email" placeholder="Enter email" required="required" /></div>
-							  </div>
-							  <!--div class="form-group">
-								  <label for="subject">
-									  Subject</label>
-								  <select id="subject" name="subject" class="form-control" required="required">
-									  <option value="na" selected="">Choose One:</option>
-									  <option value="service">General Customer Service</option>
-									  <option value="suggestions">Suggestions</option>
-									  <option value="product">Product Support</option>
-								  </select>
-							  </div-->			
-							  <div class="form-group">
-								  <label for="exampleInputFile">CV File</label>
-								  <div class="fileUpload btn btn-danger">
-									<span>Upload</span><input type="file" class="upload" value="" name="cv_file" />
-								  </div>				
-								  <div class="file-label text-primary"></div>
-								  <div class="checkbox">
-									  <p class="help-block">With submitting this form you are agree for the used of your credentials information to us.</p>						 <label><input type="checkbox">I Agree</label>
-								  </div>
-							  </div>
-						  </div>
-						  <div class="col-md-6">
-							  <div class="form-group">
-								  <label for="name">Message</label>
-								  <textarea name="message" id="message" class="form-control" rows="9" cols="25" required="required" placeholder="Message"></textarea>
-							  </div>
-						  </div>
-						  <div class="col-md-12">
-							  <button type="submit" class="btn btn-skin pull-right" id="btnContactUs">Send</button>
-						  </div>
-					  </div>
-				  </form>
-			  </div>
-		  </div>
-
-	  </div>
-
-	<div class="modal-footer">&nbsp;
-	<!--button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	<button type="button" class="btn btn-primary">Save changes</button-->
-	</div>
-
-	</div>
-  </div>
-</div>

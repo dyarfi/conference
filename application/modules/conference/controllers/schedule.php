@@ -40,9 +40,9 @@ class Schedule extends Admin_Controller {
             // Set CRUD subject
             $crud->set_subject('Schedule');                    
             // Set column
-            $crud->columns('subject','name','description','status');	
+            $crud->columns('subject','url','description','status');	
 			// Sets the required fields of add and edit fields
-			$crud->required_fields('subject','name','status');    
+			$crud->required_fields('subject','url','status');    
 			// Set custom field display for status
             $crud->field_type('status','dropdown',array('1' => 'Active', '0' => 'Inactive')); 
             $crud->field_type('user_id','hidden');

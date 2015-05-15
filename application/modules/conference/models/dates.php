@@ -1,9 +1,9 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-// Model Class Object for Informations
-class Informations Extends CI_Model {
+// Model Class Object for Dates
+class Dates Extends CI_Model {
 	// Table name for this model
-	protected $table = 'informations';
+	protected $table = 'speakers';
 	
 	public function __construct(){
 		// Call the Model constructor
@@ -12,15 +12,14 @@ class Informations Extends CI_Model {
 		$this->_model_vars	= array(
 						    'id'		=> 0,
 						    'conference_id'	=> 0,
-						    'url'		=> '',
-						    'subject'		=> '',
-						    'description'	=> '',
-						    'cover'		=> '',
-						    'allow_comment'	=> 0,
+						    'url'			=> '',
+						    'title'		=> '',
+                            'description'=> '',
+                            'date'      => '',
 						    'user_id'		=> 0,
-						    'count'		=> 0,
+						    'count'			=> 0,
 						    'status'		=> '',
-						    'added'		=> 0,
+						    'added'			=> 0,
 						    'modified'		=> 0);
 		
 		$this->db = $this->load->database('default', true);	
@@ -41,18 +40,15 @@ class Informations Extends CI_Model {
 				. '`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY, '
 				. '`conference_id` INT(11) UNSIGNED NULL, '
 				. '`url` VARCHAR(255) NULL, '
-				. '`subject` VARCHAR(255) NULL, '
-				. '`description` TEXT NULL, '
-				. '`ext_link1` VARCHAR(324) NULL, '
-				. '`ext_link2` VARCHAR(324) NULL, '
-				. '`cover` VARCHAR(324) NULL, '
-				. '`allow_comment` TINYINT(1) NOT NULL, '			
-				. '`user_id` TINYINT(3) NULL , '
+				. '`title` VARCHAR(255) NULL, '
+                . '`description` TEXT NULL, '
+                . '`date` DATE, '
+                . '`user_id` TINYINT(3) NULL , '
 				. '`count` INT(11) NULL , '		
 				. '`status` TINYINT(1) NULL , '
 				. '`added` INT(11) UNSIGNED NULL, '
 				. '`modified` INT(11) UNSIGNED NULL, '
-				. 'INDEX (`url`) '
+				. 'INDEX (`url`, `conference_id`) '
 				. ') ENGINE=MYISAM DEFAULT CHARSET=utf8;';
 				
 				
@@ -83,7 +79,7 @@ class Informations Extends CI_Model {
 		$data = $this->db->count_all_results();
 		return $data;
 	}
-	public function getInformation($id = null){
+	public function getDate($id = null){
 		if(!empty($id)){
 			$data = array();
 			$options = array('id' => $id);
@@ -95,11 +91,11 @@ class Informations Extends CI_Model {
 			$Q->free_result();
 			return $data;
 		}
-	}
+	}	
 	public function getByConferenceId($conference_id = null){
 		if(!empty($conference_id)){
 			$data = array();
-			$options = array('conference_id' => $conference_id,'status'=>'1');
+			$options = array('conference_id' => $conference_id);
 			$Q = $this->db->get_where($this->table,$options);
 			if ($Q->num_rows() > 0){
 				foreach ($Q->result_object() as $row){
@@ -123,7 +119,7 @@ class Informations Extends CI_Model {
 			return $data;
 		}
 	}
-	public function getAllInformation($status=null){
+	public function getAllDate($status=null){
 		$data = array();
 		$this->db->order_by('added');
 		$Q = $this->db->get($this->table);
@@ -136,16 +132,18 @@ class Informations Extends CI_Model {
 		$Q->free_result();
 		return $data;
 	}
-	public function setInformation($object=null){
+	public function setDate($object=null){
 		
 		// Set User data
 		$data = array(			
-				'parameter' => $object['username'],
-				'alias' => $object['alias'],
-				'value' => $object['value'],
-				'is_system' => $object['is_system'],
-				'added'		=> time(),	
-				'status' => $object['status']
+				'conference_id'	=> @$object['conference_id'],
+                'url'			=> @$object['url'],
+                'subject'		=> @$object['subject'],
+                'nationality_id'=> @$object['nationality_id'],
+                'research_area' => @$object['research_area'],
+                'biography'		=> @$object['biography'],
+                'added'     => time(),	
+				'status'    => $object['status']
 			    );
 		
 		// Insert User data
@@ -158,9 +156,9 @@ class Informations Extends CI_Model {
 		return $insert_id;
 		
 	}	
-	public function deleteInformation($id) {
+	public function deleteDate($id) {
 		
-		// Check Information id
+		// Check Date id
 		$this->db->where('id', $id);
 		
 		// Delete setting form database

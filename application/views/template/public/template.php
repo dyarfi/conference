@@ -4,11 +4,9 @@
 <head>
 	<meta charset="utf-8">
 	<title><?php echo $page_title; ?></title>
-	
+    
     <!-- Bootstrap Core CSS -->
     <link href="<?php echo base_url();?>assets/public/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-
-	<!--link href="<?php echo base_url();?>assets/public/js/rs-plugin/css/settings.css" media="screen" rel="stylesheet"-->
 
 	<link href="<?php echo base_url();?>assets/public/css/fonts.css" rel="stylesheet" type="text/css">
 	<link href="<?php echo base_url();?>assets/public/css/fancybox/jquery.fancybox.css" rel="stylesheet" type="text/css">
@@ -24,30 +22,22 @@
 		var base_URL = '<?php echo base_url();?>';
 	</script>
 </head>
-<body id="page-top" data-spy="scroll" data-target=".navbar-custom">
-	
-	<div id="wrapper">
-		
-			<?php $this->load->view('template/public/header'); ?>
-	
-			<div id="navigation">
-				<?php $this->load->view('template/public/navigation'); ?>
-			</div>
-		
-			<div id="main">
-				<div class="messageFlash">
-					<?php $this->load->view('flashdata'); ?>
-				</div>
-				<div class="content container">
-					<?php $this->load->view($main); ?>
-				</div>
-			</div>
-	
-	<?php $this->load->view('template/public/footer'); ?>
-		
+<body id="page-top" data-spy="scroll" data-target=".navbar-custom">	
+	<div id="wrapper">		
+        <?php $this->load->view('template/public/header'); ?>
+        <div id="navigation">
+            <?php $this->load->view('template/public/navigation'); ?>
+        </div>
+        <div id="main">
+            <div class="messageFlash container">
+                <?php $this->load->view('flashdata'); ?>
+            </div>
+            <div class="content container">
+                <?php $this->load->view($main); ?>
+            </div>
+        </div>	
+	<?php $this->load->view('template/public/footer'); ?>		
 	</div>    
-	
-	<!--<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>-->
 	
 	<!-- Core JavaScript Files -->
     <script src="<?php echo base_url();?>assets/public/js/jquery.min.js"></script>
@@ -61,16 +51,18 @@
 	<script src="<?php echo base_url();?>assets/public/js/jquery.scrollTo.js"></script>
 	<script src="<?php echo base_url();?>assets/public/js/wow.min.js"></script>
 	
-	<script src="<?php echo base_url();?>assets/public/js/jquery.vide.min.js"></script>
 	<script src="<?php echo base_url();?>assets/public/js/parallax.min.js"></script>
 	<script type="text/javascript" src="<?=base_url();?>assets/public/js/imagesloaded.pkgd.min.js"></script>
 	
-	<!--script src="<?php echo base_url();?>assets/public/js/rs-plugin/js/jquery.themepunch.plugins.min.js"></script>
-	<script src="<?php echo base_url();?>assets/public/js/rs-plugin/js/jquery.themepunch.revolution.min.js"></script-->
-	
-    <!-- Custom Theme JavaScript -->
+	<!-- Custom Theme JavaScript -->
     <script src="<?php echo base_url();?>assets/public/js/custom.js"></script>
-	
+ <!-- START INLINE JAVASCRIPTS -->
+<script type="text/javascript">
+jQuery(document).ready(function() {    
+<?php echo ($js_inline) ? "\t".$js_inline."\n" : "";?>
+});
+</script>
+<!-- END JAVASCRIPTS -->   
 </body>
 </html>
 <?php // echo $this->benchmark->memory_usage();?>

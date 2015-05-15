@@ -26,7 +26,7 @@ class PageMenus Extends CI_Model {
                 $sql	= 'CREATE TABLE IF NOT EXISTS `'.$this->table.'` ('
 				. '`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY , '
 				. '`parent_id` INT(11) UNSIGNED NULL , '
-				. '`name` VARCHAR(128) NULL , '
+				. '`url` VARCHAR(255) NULL , '
 				. '`title` VARCHAR(255) NULL , '
 				. '`description` TEXT NULL , '
 				. '`url` VARCHAR(255) NULL , '		
@@ -41,7 +41,7 @@ class PageMenus Extends CI_Model {
 				. '`status` ENUM( \'publish\', \'unpublish\', \'deleted\' ) NULL DEFAULT \'publish\', '
 				. '`added` INT(0) NULL , '
 				. '`modified` INT(0) NULL , '
-				. 'INDEX (`parent_id`, `name`, `sub_level`, `order`, `status`) '
+				. 'INDEX (`parent_id`, `url`, `sub_level`, `order`, `status`) '
 				. ') ENGINE=MYISAM DEFAULT CHARSET=utf8;';
 
 		$this->db->query($sql);

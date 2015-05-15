@@ -1,9 +1,9 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-// Model Class Object for Informations
-class Informations Extends CI_Model {
+// Model Class Object for Submissions
+class Submissions Extends CI_Model {
 	// Table name for this model
-	protected $table = 'informations';
+	protected $table = 'submissions';
 	
 	public function __construct(){
 		// Call the Model constructor
@@ -12,15 +12,15 @@ class Informations Extends CI_Model {
 		$this->_model_vars	= array(
 						    'id'		=> 0,
 						    'conference_id'	=> 0,
-						    'url'		=> '',
+						    'url'			=> '',
 						    'subject'		=> '',
-						    'description'	=> '',
-						    'cover'		=> '',
-						    'allow_comment'	=> 0,
+                            'nationality_id'=> '',
+                            'research_area' => '',
+						    'biography'		=> '',
 						    'user_id'		=> 0,
-						    'count'		=> 0,
+						    'count'			=> 0,
 						    'status'		=> '',
-						    'added'		=> 0,
+						    'added'			=> 0,
 						    'modified'		=> 0);
 		
 		$this->db = $this->load->database('default', true);	
@@ -42,17 +42,16 @@ class Informations Extends CI_Model {
 				. '`conference_id` INT(11) UNSIGNED NULL, '
 				. '`url` VARCHAR(255) NULL, '
 				. '`subject` VARCHAR(255) NULL, '
-				. '`description` TEXT NULL, '
-				. '`ext_link1` VARCHAR(324) NULL, '
-				. '`ext_link2` VARCHAR(324) NULL, '
-				. '`cover` VARCHAR(324) NULL, '
-				. '`allow_comment` TINYINT(1) NOT NULL, '			
+                . '`nationality_id` INT(11) NULL, '
+                . '`research_area` VARCHAR(255) NULL, '
+                . '`biography` TEXT NOT NULL, '
+				. '`photo` VARCHAR(255) NULL, '
 				. '`user_id` TINYINT(3) NULL , '
 				. '`count` INT(11) NULL , '		
 				. '`status` TINYINT(1) NULL , '
 				. '`added` INT(11) UNSIGNED NULL, '
 				. '`modified` INT(11) UNSIGNED NULL, '
-				. 'INDEX (`url`) '
+				. 'INDEX (`name`, `conference_id`) '
 				. ') ENGINE=MYISAM DEFAULT CHARSET=utf8;';
 				
 				
@@ -75,6 +74,7 @@ class Informations Extends CI_Model {
 		return $this->db->table_exists($this->table);
 		
 	}
+    
 	public function getCount($status = null){
 		$data = array();
 		$options = array('status' => $status);
@@ -83,7 +83,8 @@ class Informations Extends CI_Model {
 		$data = $this->db->count_all_results();
 		return $data;
 	}
-	public function getInformation($id = null){
+    
+	public function getSubmission($id = null){
 		if(!empty($id)){
 			$data = array();
 			$options = array('id' => $id);
@@ -95,21 +96,32 @@ class Informations Extends CI_Model {
 			$Q->free_result();
 			return $data;
 		}
-	}
-	public function getByConferenceId($conference_id = null){
+	}	
+    
+	public function getByConference($conference_id = null){
+        
 		if(!empty($conference_id)){
-			$data = array();
-			$options = array('conference_id' => $conference_id,'status'=>'1');
-			$Q = $this->db->get_where($this->table,$options);
-			if ($Q->num_rows() > 0){
-				foreach ($Q->result_object() as $row){
-					$data[] = $row;
-				}
-			}
-			$Q->free_result();
-			return $data;
+            
+			$this->db->select('*');
+            $this->db->from('tbl_conference_submissions');
+            $this->db->join($this->table, 'tbl_conference_submissions.submission_id = tbl_submissions.id');
+            $this->db->where('tbl_conference_submissions.conference_id', $conference_id);
+            $this->db->order_by('tbl_conference_submissions.priority','DESC');
+            
+            $Q = $this->db->get();
+
+            if ($Q->num_rows() > 0){
+                foreach ($Q->result_object() as $row){
+                    $data[] = $row;
+                }
+            }
+            $Q->free_result();
+
+            // Update User data
+            return $data;
 		}
 	}
+    
 	public function getByParameter($param = null){
 		if(!empty($param)){
 			$data = array();
@@ -123,7 +135,8 @@ class Informations Extends CI_Model {
 			return $data;
 		}
 	}
-	public function getAllInformation($status=null){
+    
+	public function getAllSubmission($status=null){
 		$data = array();
 		$this->db->order_by('added');
 		$Q = $this->db->get($this->table);
@@ -136,16 +149,19 @@ class Informations Extends CI_Model {
 		$Q->free_result();
 		return $data;
 	}
-	public function setInformation($object=null){
+    
+	public function setSubmission($object=null){
 		
 		// Set User data
 		$data = array(			
-				'parameter' => $object['username'],
-				'alias' => $object['alias'],
-				'value' => $object['value'],
-				'is_system' => $object['is_system'],
-				'added'		=> time(),	
-				'status' => $object['status']
+				'conference_id'	=> @$object['conference_id'],
+                'url'			=> @$object['url'],
+                'subject'		=> @$object['subject'],
+                'nationality_id'=> @$object['nationality_id'],
+                'research_area' => @$object['research_area'],
+                'biography'		=> @$object['biography'],
+                'added'     => time(),	
+				'status'    => $object['status']
 			    );
 		
 		// Insert User data
@@ -158,9 +174,9 @@ class Informations Extends CI_Model {
 		return $insert_id;
 		
 	}	
-	public function deleteInformation($id) {
+	public function deleteSubmission($id) {
 		
-		// Check Information id
+		// Check Submission id
 		$this->db->where('id', $id);
 		
 		// Delete setting form database

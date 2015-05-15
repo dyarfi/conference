@@ -41,12 +41,13 @@ class Page extends Admin_Controller {
             // Set CRUD subject
             $crud->set_subject('Page');                            
             // Set table relation
-            $crud->set_relation('menu_id','tbl_page_menus','name');
-			// Add custom column
+            $crud->set_relation('menu_id','tbl_page_menus','title');
+			
             // Set column
-            $crud->columns('subject','name','menu_id','synopsis','text','status','added','modified');			
+            $crud->columns('subject','url','synopsis','text','status','added','modified');			
 			// The fields that user will see on add and edit form
-			$crud->fields('subject','name','menu_id','synopsis','text','publish_date','unpublish_date','status','added','modified');
+			$crud->fields('subject','url','menu_id','synopsis','text','publish_date','unpublish_date','status','added','modified');
+            
             // Set column display 
             $crud->display_as('menu_id','Menu');
 			// Changes the default field type
@@ -63,7 +64,7 @@ class Page extends Admin_Controller {
 			$crud->callback_column('added',array($this,'_callback_time'));
 			$crud->callback_column('modified',array($this,'_callback_time'));  
 			// Sets the required fields of add and edit fields
-			$crud->required_fields('subject','name','text','status'); 
+			$crud->required_fields('subject','url','text','status'); 
             // Set upload field
             // $crud->set_field_upload('file_name','uploads/pages');
 			 

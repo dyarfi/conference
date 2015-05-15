@@ -60,13 +60,14 @@ $route[$admin.'/setting/(:any)']	= 'admin/setting/$1';
 $route[$admin.'/serverlog/(:any)']	= 'admin/serverlog/$1';
 /***** Administrator module menu mandatory [end] *****/
 
-
 // Conference module routes
 $route[$admin.'/conference/(:any)']	 = 'conference/$1';
 $route[$admin.'/information/(:any)'] = 'conference/information/$1';
 $route[$admin.'/schedule/(:any)']	 = 'conference/schedule/$1';
 $route[$admin.'/speaker/(:any)']	 = 'conference/speaker/$1';
-$route[$admin.'/confgallery/(:any)']  = 'conference/gallery/$1';
+$route[$admin.'/submission/(:any)']	 = 'conference/submission/$1';
+$route[$admin.'/conference_gallery/(:any)']  = 'conference/gallery/$1';
+$route[$admin.'/conference_date/(:any)']  = 'conference/date/$1';
 
 // Participant and Gallery Routes
 $route[$admin.'/participant/(:any)']	= 'participant/$1';
@@ -94,7 +95,7 @@ $route[$admin.'/district/(:any)']	= 'region/district/$1';
 
 $route['default_controller'] = 'home';
 //$route['(:any)']			 = 'home/menu/$1';
-//$route['(:any)/page/(:any)'] = 'home/page/$1/$2';
+$route['read/page/(:any)']   = 'read/page/$1';
 $route['download/(:num)']	 = 'download';
 $route['404_override']		 = '';
 
