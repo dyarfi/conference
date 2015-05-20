@@ -150,12 +150,11 @@ $config['modulelist'] = array(
 	// Conference module
 	'Conference' => array (
 		// Career Models list
-		'models'		=> array('conference/Conferences','conference/Dates','conference/Speakers','conference/Informations','conference/Schedules','conference/Submissions','conference/Gallery'),
+		'models'		=> array('conference/Conferences','conference/Speakers','conference/Informations','conference/Schedules','conference/Submissions','conference/Galleries','conference/Banners'),
 		// Career module menus
 		'module_menu'	=> array(
                     'conference/index'	=> 'Conferences',
-                    'conference_date/index'	=> 'Conference Date',
-                    'speaker/index'     => 'Speaker',
+                    'speaker/index'     => 'Speakers',
                     'information/index'	=> 'Informations',
                     'schedule/index'	=> 'Schedules',
                     'submission/index'	=> 'Submissions'
@@ -213,7 +212,17 @@ $config['modulelist'] = array(
                 'conference_gallery/index/delete' => 'Delete Gallery',
                 'conference_gallery/index/change' => 'Change Gallery',
                 'conference_gallery/index/export' => 'Export Gallery',
-                'conference_gallery/index/print'	=> 'Print Gallery'
+                'conference_gallery/index/print'	=> 'Print Gallery',
+
+                // Conferences Banner functions
+                'conference_banner/index'	=> 'Banner',
+                'conference_banner/index/add'	=> 'Add Banner',
+                'conference_banner/index/view'	=> 'View Banner',			
+                'conference_banner/index/edit'	=> 'Edit Banner',			
+                'conference_banner/index/delete' => 'Delete Banner',
+                'conference_banner/index/change' => 'Change Banner',
+                'conference_banner/index/export' => 'Export Banner',
+                'conference_banner/index/print'	=> 'Print Banner'
                 ),
 	),
     // Participant Module

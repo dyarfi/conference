@@ -41,13 +41,13 @@
 	
 	<!-- Core JavaScript Files -->
     <script src="<?php echo base_url();?>assets/public/js/jquery.min.js"></script>
+    <script src="<?php echo base_url();?>assets/public/js/jquery.easing.min.js"></script>
 	<!--<script src="<?php echo base_url();?>assets/public/js/gmap3.min.js"></script>-->
 	<!--<script src="<?php echo base_url();?>assets/public/js/jquery-ui/jquery-ui.min.js"></script>-->
 	
 	<script src="<?php echo base_url();?>assets/public/js/bootstrap.min.js"></script>
     <script src="<?php echo base_url();?>assets/public/js/jquery.fancybox.pack.js"></script>
     
-    <script src="<?php echo base_url();?>assets/public/js/jquery.easing.min.js"></script>	
 	<script src="<?php echo base_url();?>assets/public/js/jquery.scrollTo.js"></script>
 	<script src="<?php echo base_url();?>assets/public/js/wow.min.js"></script>
 	

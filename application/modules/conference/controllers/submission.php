@@ -58,28 +58,32 @@ class Submission extends Admin_Controller {
 			//$crud->set_primary_key('user_id','tbl_user_profiles');
             // Set CRUD subject
             $crud->set_subject('Submission'); 
-			// Set table relation	
-			// set_relation_n_n( $field_name, $relation_table, $selection_table, $primary_key_alias_to_this_table, $primary_key_alias_to_selection_table, $title_field_selection_table [ , string $priority_field_relation )    
-			// $crud->set_relation_n_n('category', 'film_category', 'category', 'film_id', 'category_id', 'name');
-			// $crud->set_relation_n_n('actors', 'film_actor', 'actor', 'film_id', 'actor_id', 'fullname','priority');
-			// $crud->set_relation_n_n('user_id', 'tbl_users', 'tbl_user_groups','id','group_id','name');
-            //$crud->set_relation('conference_id', 'tbl_conferences', 'subject');
-            // Set table relation	    
+            
+            // Fields
+            $crud->fields('subject','url','description','user_id','status','added','modified');
+            
 			// Set column
-            $crud->columns('subject','url','description','status');			
-            // Set column display 
-            //$crud->display_as('conference_id','Conference');
-			// Set custom field display for gender
-            //$crud->field_type('gender','dropdown',array('1' => 'Male', '0' => 'Female'));  
+            $crud->columns('subject','description','added','modified','status');			
+            // Set field type
+            $crud->field_type('user_id','hidden', ACL::user()->id);
             $crud->field_type('added','hidden');
             $crud->field_type('modified','hidden');
+            $crud->field_type('url','hidden');
+            // This callback escapes the default auto field output of the field added at the add form
+			$crud->callback_add_field('added', function () {
+                return '<input type="hidden" maxlength="50" value="'.time().'" name="added">';
+            });
+			// This callback escapes the default auto field output of the field modified at the edit form
+            $crud->callback_edit_field('modified', function () {
+                return '<input type="hidden" maxlength="50" value="'.$time.'" name="modified">';
+            });
             // Unset Add
 			//$crud->unset_add();
             // Unset Edit
 			//$crud->unset_edit();
 			// Set upload field
 			//$crud->set_field_upload('cv_file','uploads/applicants');
-			$crud->set_field_upload('photo','uploads/speakers');
+			//$crud->set_field_upload('photo','uploads/speakers');
             $this->load($crud, 'Submissions');
         } catch (Exception $e) {
             show_error($e->getMessage() . ' --- ' . $e->getTraceAsString());
@@ -170,16 +174,11 @@ class Submission extends Admin_Controller {
 		}
     }
     
-    public function _callback_total_image($value, $row) {
-        $total = $this->user_model->total_image_submitted($row->participant_id);
-        return $total;
-    }
-    
     private function load($crud, $nav) {
         $output = $crud->render();
         $output->nav = $nav;
         if ($crud->getState() == 'list') {
-            // Set Page Title 
+            // Set Title 
             $output->page_title = 'Submission Listings';
             // Set Main Template
             $output->main       = 'template/admin/metronix';

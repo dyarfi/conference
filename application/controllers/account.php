@@ -17,11 +17,25 @@ class Account extends Public_Controller {
         
 		// Load Conference model 
 		$this->load->model('conference/Conferences');
-           			
+        
+        // Load email library
+        $this->load->library('email');
+
+        //print_r($this->participant);
+        //print_r($this->session->userdata())
+        
 	}
 	
 	public function index() {
-		        
+        
+		// Check if user is already login
+        if ($this->participant) {
+            
+            // Redirect to account
+            redirect(base_url('account/dashboard'));
+            
+        }
+        
         // Default data setup
         $fields	= array(
                         'email'        	=> '',
@@ -175,14 +189,21 @@ class Account extends Public_Controller {
 				
                 if (!empty($return)) {
 
-                    $this->load->library('email');
-
+                    // Data to send to email activation views
+                    $message['site_name']       = config_item('developer_name');
+                    $message['site_link']       = base_url();
+                    $message['name']            = $object['name'];
+                    $message['site_copyright']  = $this->Settings->getByParameter('copyright')->value;
+                    $message['activation']      = base_url('account/activation?confirm='.base64_encode($object['verify'].'-:-'.$object['email']).'');        
+                    
+                    // Set email template
+                    $email_template = $this->load->view('admin/emails/account_activation',$this->load->vars($message),TRUE);
+                    
                     $this->email->from('noreply@simplewavenet.com');
                     $this->email->to($object['email']);
                     $this->email->reply_to('noreply@simplewavenet.com');
                     $this->email->subject('Account Activation | FISIP UIN Jakarta');
-                    $this->email->message('Hey <b>'.$object['name'].'</b>, please confirm your account by clicking this <a href="'.base_url('account/activation?confirm='.base64_encode($object['verify'].'-:-'.$object['email']).'').'">link</a>, thank you');
-
+                    $this->email->message($email_template);
                     $this->email->send();
 
                 } 
@@ -227,7 +248,15 @@ class Account extends Public_Controller {
     
     // Participant Dashboard
     public function dashboard() {
-
+        
+        // Check if user is already login
+        if (!$this->participant) {
+            
+            // Redirect to account
+            redirect(base_url('account'));
+            
+        }
+        
         // Get latest conference
 		$conference         = $this->Conferences->getConferenceLatest();
         $data['conference'] = $conference;
@@ -239,7 +268,7 @@ class Account extends Public_Controller {
         $data['part_attachments'] = $this->Attachments->getParticipantAttachment($conference->id,$this->participant->id);
         
         // Set main template
-		$data['main'] = 'dashboard';
+		$data['main'] = $this->participant->completed ? 'dashboard' : 'dashboard_first_time';
 				
 		// Set site title page with module menu
 		$data['page_title'] = 'My Dashboard';
@@ -259,10 +288,154 @@ class Account extends Public_Controller {
         // Set array for query
         $activation['verify']   = $params[0];
         $activation['email']    = $params[1];
+        // Set checking conditions
+        $activation['complete'] = 0;
+        $activation['status'] = 0;
         
-        $active = $this->Participants->getActivation($activation);
-        redirect(base_url());
+        $activated = $this->Participants->getActivation($activation);
         
+        if (!empty($activated) && $activated->completed == 0) {
+            
+            // Unset first for duplication session
+            $this->session->unset_userdata('participant');
+            
+            // Set user data session
+            $this->session->set_userdata('participant', $activated);
+            
+            // Set flash message
+            $this->session->set_flashdata('message','Please complete your account profile to continue!');
+            
+            // Redirect to dashboard
+            redirect(base_url('account/dashboard'));
+            
+        } else {
+            
+            // Set message
+            $this->session->set_flashdata('message','Sorry your account is not listed, please register!');
+
+            // Redirect to user page
+            redirect(base_url('account'));
+            
+        }
+        
+    }
+    
+    public function update_account() {
+        
+        // Default data setup
+        $fields	= array(
+                        'fullname'       => '',
+                        'email' => '',
+                        'password' => '',
+                        'confirm_password' => '',
+						//'gender'         => '',
+                        //'phone_number'   => '',
+                        'captcha'        => '');
+
+        $errors	= $fields;
+        $this->form_validation->set_rules('fullname', 'Full Name', 'trim|required|min_length[5]|max_length[32]|xss_clean');
+		$this->form_validation->set_rules('email', 'Email','trim|valid_email|required|max_length[55]|callback_match_email|xss_clean');
+        //$this->form_validation->set_rules('gender', 'Gender','trim|required');		
+        //$this->form_validation->set_rules('phone_number', 'Phone Number','trim|is_numeric|xss_clean|max_length[25]');
+        $this->form_validation->set_rules('captcha', 'Captcha Code','trim|required|xss_clean|callback_match_captcha');
+		
+        // Check if post is requested
+        if ($this->input->server('REQUEST_METHOD') == 'POST') {			
+
+		    // Validation form checks
+		    if ($this->form_validation->run() === FALSE)
+		    {
+
+				// Set error fields
+				$error = array();
+				foreach(array_keys($fields) as $error) {
+					$errors[$error] = form_error($error);
+				}
+
+				// Set previous post merge to default
+				$fields = array_merge($fields, $this->input->post());
+				
+				if ($this->input->is_ajax_request()) {
+
+					// Send fields and errors data
+					$result['fields'] = $fields;
+					$result['errors'] = $errors;
+
+				}
+
+		    } else {
+
+                $object = array();
+				
+                $object['email']           = $this->input->get_post('email', true);
+				$object['name']            = $this->input->get_post('fullname', true);
+                //$object['gender']          = $this->input->get_post('gender', true);
+				//$object['phone_number']    = $this->input->get_post('phone_number', true);
+				$object['verify']          = $this->input->get_post('captcha', true);
+                $object['status']          = '0';
+                $object['completed']       = '0';
+				
+                $return = $this->Participants->setParticipant($object);
+				
+                if (!empty($return)) {
+
+                    // Data to send to email activation views
+                    $message['site_name']       = config_item('developer_name');
+                    $message['site_link']       = base_url();
+                    $message['name']            = $activated->name;
+                    $message['site_copyright']  = $this->Settings->getByParameter('copyright')->value;
+                    $message['conference']      = $this->Conferences->getConferenceLatest();
+                    $message['activation']      = base_url('account/activation?confirm='.base64_encode($object['verify'].'-:-'.$object['email']).'');        
+
+                    // Set email template
+                    $email_template = $this->load->view('admin/emails/account_is_active',$this->load->vars($message),TRUE);
+
+                    $this->email->from('noreply@simplewavenet.com');
+                    $this->email->to($activated->email);
+                    $this->email->reply_to('noreply@simplewavenet.com');
+                    $this->email->subject('Account is activated | FISIP UIN Jakarta');
+                    $this->email->message($email_template);
+                    $this->email->send();
+        
+
+                } 
+
+                // Set message
+                $this->session->set_flashdata('message','Please check your Email : <b>'.$object['email'].'</b> for the Account Activation!');
+                    
+				if ($this->input->is_ajax_request()) {
+					// Send json message
+					$result['result']	= 'OK';
+					$result['label']	= base_url('upload');
+				} else {					
+                    // Redirect if not ajax
+					redirect(base_url());
+				}
+		    }
+
+	    }
+		
+        // Captcha data
+        $data['captcha'] = $this->Captcha->image();
+
+		// Set error data to view
+		$data['errors']  = $errors;
+        
+        // Post Fields
+		$data['fields']	 = $fields;
+        
+        // Set gender data
+        $data['genders'] = config_item('gender');
+
+		// Set main template
+		$data['main']    = 'account';
+				
+		// Set site title page with module menu
+		$data['page_title'] = 'Account';
+		
+		// Load admin template
+		$this->load->view('template/public/template', $this->load->vars($data));
+
     }
     
     // Forgot password method

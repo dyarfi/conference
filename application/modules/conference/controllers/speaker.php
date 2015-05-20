@@ -63,13 +63,21 @@ class Speaker extends Admin_Controller {
             //$crud->set_relation('conference_id', 'tbl_conferences', 'subject');
             // Set table relation	    
 			// Set column
-            $crud->columns('subject','url','biography','photo','status');			
+            $crud->columns('subject','biography','photo','status');			
             // Set column display 
             //$crud->display_as('conference_id','Conference');
 			// Set custom field display for gender
             //$crud->field_type('gender','dropdown',array('1' => 'Male', '0' => 'Female'));  
             $crud->field_type('added','hidden');
             $crud->field_type('modified','hidden');
+            // This callback escapes the default auto field output of the field added at the add form
+			$crud->callback_add_field('added', function () {
+                return '<input type="hidden" maxlength="50" value="'.time().'" name="added">';
+            });
+			// This callback escapes the default auto field output of the field modified at the edit form
+            $crud->callback_edit_field('modified', function () {
+                return '<input type="hidden" maxlength="50" value="'.$time.'" name="modified">';
+            });
             // Unset Add
 			//$crud->unset_add();
             // Unset Edit
@@ -176,7 +184,7 @@ class Speaker extends Admin_Controller {
         $output = $crud->render();
         $output->nav = $nav;
         if ($crud->getState() == 'list') {
-            // Set Page Title 
+            // Set Title 
             $output->page_title = 'Speaker Listings';
             // Set Main Template
             $output->main       = 'template/admin/metronix';

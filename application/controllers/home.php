@@ -14,7 +14,8 @@ class Home extends Public_Controller {
 		
 		// Load Conference related model in admin module
 		$this->load->model('conference/Conferences');
-		$this->load->model('conference/Informations');		
+        $this->load->model('conference/Banners');		
+		$this->load->model('conference/Informations');
 		$this->load->model('conference/Speakers');
         $this->load->model('conference/Schedules');
         $this->load->model('conference/Submissions');
@@ -41,10 +42,13 @@ class Home extends Public_Controller {
 		// Set speakers link data
 		$data['speakers']   = $this->Conferences->getSpeakers($conference->id);
 
-		// Set speakers link data
+		// Set scedules link data
 		$data['schedules']  = $this->Schedules->getAllSchedule(array('conference_id'=>$conference->id));
 
-		// Set facebook link data
+        // Set banners link data
+		$data['banners']    = $this->Banners->getAllBanner(array('conference_id'=>$conference->id));
+        
+        // Set facebook link data
 		$data['facebook']	= $this->Settings->getByParameter('socmed_facebook');
 				
 		// Set twitter link data

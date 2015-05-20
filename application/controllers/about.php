@@ -26,6 +26,10 @@ class About extends Public_Controller {
         $this->load->model('conference/Schedules');
         $this->load->model('conference/Submissions');
 
+        $this->load->model('conference/Galleries');
+        $this->load->model('conference/Banners');
+        
+		
 	}
 	
 	public function index() {
@@ -50,6 +54,12 @@ class About extends Public_Controller {
 
 		// Set speakers link data
 		$data['schedules']  = $this->Schedules->getAllSchedule(array('conference_id'=>$conference->id));
+
+        // Set conference banners link data
+		$data['banners']  = $this->Banners->getAllBanner(array('conference_id'=>$conference->id));
+
+        // Set conference gallery link data
+		$data['gallery']  = $this->Galleries->getAllImage(array('conference_id'=>$conference->id));
 
 		// Set facebook link data
 		$data['facebook']	= $this->Settings->getByParameter('socmed_facebook');

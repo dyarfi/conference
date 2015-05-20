@@ -85,6 +85,23 @@ a:focus {
 
 .capitalize { text-transform: capitalize; }
 
+.carousel-top { /*max-height: 380px; overflow: hidden;*/ }
+.carousel-top .carousel-indicators { top:15px; opacity: 0; }
+.carousel-top .carousel-inner { }
+.carousel-top.item { }
+.carousel-top.item img { }
+.carousel-top .left, .carousel-top .right {  }
+.carousel-top .carousel-control { background: none; }
+.carousel-top .control-handler { }
+.carousel-top .carousel-caption { position: absolute; left: 0px;right: 0px; bottom: -50px;}
+.carousel-top .carousel-caption { margin: 0 auto; width: 100%; padding: 5px 5px; background: rgba(0,0,0,0.3)}
+.carousel-top .carousel-caption h4 { margin: 0 auto 0px auto}
+.carousel-top .carousel-caption p { line-height:1.2em; margin: 5px auto }
+.carousel-top .carousel-control .icon-next { }
+.carousel-top .carousel-control .icon-prev { }
+.carousel-top.carousel-control .icon-prev, .carousel-top .carousel-control .icon-next { }
+.carousel-top .carousel-control .icon-prev, .carousel-top .carousel-control .icon-next, .carousel-top .carousel-control .glyphicon-chevron-left, .carousel-top .carousel-control .glyphicon-chevron-right { font-size: 1.4em; }
+
 #main {
     padding: 110px 0 0 0;
 }
@@ -611,15 +628,16 @@ hr {
 }
 
 #portfolio {
-	background: #f9f9f9 url('../img/bg13.jpg');
+    /*background: #f9f9f9 url('../img/bg13.jpg');*/
 }
 
 .carousel-inner {
-	height: 540px;
+    /*height: 540px;*/
+    overflow: hidden;
 }
 
 .circle-handler {
-	position: relative;
+    position: relative;
 }
 
 .technology, .entrepreneur, .ideas {
@@ -1541,6 +1559,20 @@ Parallax
 
 
 /* Media queries */
+
+/** media queries for min-width 800px **/
+@media (max-width: 800px) { 
+    /*.carousel-top .carousel-caption { margin-bottom:50px; }*/
+    .carousel-top .carousel-caption { margin-bottom:0px; }
+}
+/** media queries for min-width 1024px **/
+@media (min-width: 1024px) { 	
+
+}
+/** media queries for min-width 1024px **/
+@media (max-width: 1024px) {	
+    .carousel-top .carousel-caption { bottom:0px; }
+}
 
 @media(min-width:480px) and (max-width:1024px) {
 	#intro.intro {

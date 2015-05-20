@@ -59,14 +59,13 @@ class Conference extends Admin_Controller {
 			//$crud->add_action('Set To Employee', '', '','fa fa-arrow-circle-left',array($this,'_callback_set_conference_to_employee'));
 			
 			// Set column to display in add / edit
-            $crud->columns('subject','url','description','open_date','close_date','cover_photo','gallery','status');
+            $crud->columns('name','subject','description','open_date','close_date','banners','gallery','status');
             
             // Callback Column 
             $crud->callback_column('gallery',array($this,'_callback_gallery'));
             
             // Callback Column 
-            //$crud->callback_column('submission',array($this,'_callback_gallery'));
-            
+            $crud->callback_column('banners',array($this,'_callback_banner'));            
             
             // Set column display 
             $crud->display_as('is_submit','Submissions');
@@ -75,7 +74,7 @@ class Conference extends Admin_Controller {
 			$crud->display_as('registration_fee','Registration Fee');
 			
             // Fields
-            $crud->fields('type','url','subject','speakers','submissions','synopsis','description','open_date','close_date','registration_fee','is_speaker','is_invitation','is_submit','cover_photo','messages','location','user_id','status','added','modified');
+            $crud->fields('type','url','name','subject','speakers','submissions','synopsis','description','open_date','close_date','registration_fee','is_speaker','is_invitation','is_submit','messages','location','user_id','status','added','modified');
             // Set field type
             $crud->field_type('user_id','hidden', ACL::user()->id);
             $crud->field_type('added','hidden');
@@ -94,20 +93,21 @@ class Conference extends Admin_Controller {
 			// Set custom field display for status
             $crud->field_type('status','enum',array('publish', 'draft', 'unpublish')); 
             
-            // This callback escapes the default auto field output of the field name at the add form
+            // This callback escapes the default auto field output of the field added at the add form
 			$crud->callback_add_field('added', function () {
                 return '<input type="hidden" maxlength="50" value="'.time().'" name="added">';
             });
-			// This callback escapes the default auto field output of the field name at the edit form
+			// This callback escapes the default auto field output of the field modified at the edit form
             $crud->callback_edit_field('modified', function () {
                 return '<input type="hidden" maxlength="50" value="'.$time.'" name="modified">';
             });
-			// This callback escapes the default auto column output of the field name at the add form
-			//$crud->callback_column('added',array($this,'_callback_time'));
-			//$crud->callback_column('modified',array($this,'_callback_time'));  
-
+			
+            // Set callback before database set
+            $crud->callback_before_insert(array($this,'_callback_url'));
+            $crud->callback_before_update(array($this,'_callback_url'));
+            
             // Set upload field
-			$crud->set_field_upload('cover_photo','uploads/conferences');
+			//$crud->set_field_upload('cover_photo','uploads/conferences');
             
             $this->load($crud, 'Conferences');
         } catch (Exception $e) {
@@ -115,10 +115,13 @@ class Conference extends Admin_Controller {
         }
     }
     
-    public function _callback_url ($value, $row) {
-		return empty($value) ? '-' : date('D, d-M-Y',$value);
+    public function _callback_url($value, $primary_key) {
+        // Set url_title() function to set readable text
+        $value['url'] = url_title($value['name'],'-',true);
+        // Return update database
+		return $value; 
     }
-    
+   
     public function _callback_time ($value, $row) {
 		return empty($value) ? '-' : date('D, d-M-Y',$value);
     }
@@ -127,7 +130,15 @@ class Conference extends Admin_Controller {
         if ($row->id) { 
             return '<a href="'.base_url(ADMIN).'/conference_gallery/index/'.$row->id.'" class="fancyframe iframe"><span class="btn btn-default btn-mini glyphicon glyphicon-camera"></span></a>'; 
         } else { 
-            return 'Already Employed';
+            return '-';
+        }
+    }
+    
+    public function _callback_banner ($value,$row) {
+        if ($row->id) { 
+            return '<a href="'.base_url(ADMIN).'/conference_banner/index/'.$row->id.'" class="fancyframe iframe"><span class="btn btn-default btn-mini glyphicon glyphicon-picture"></span></a>'; 
+        } else { 
+            return '-';
         }
     }
     

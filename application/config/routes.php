@@ -66,10 +66,10 @@ $route[$admin.'/information/(:any)'] = 'conference/information/$1';
 $route[$admin.'/schedule/(:any)']	 = 'conference/schedule/$1';
 $route[$admin.'/speaker/(:any)']	 = 'conference/speaker/$1';
 $route[$admin.'/submission/(:any)']	 = 'conference/submission/$1';
-$route[$admin.'/conference_gallery/(:any)']  = 'conference/gallery/$1';
-$route[$admin.'/conference_date/(:any)']  = 'conference/date/$1';
+$route[$admin.'/conference_gallery/(:any)']  = 'conference/conference_gallery/$1';
+$route[$admin.'/conference_banner/(:any)']  = 'conference/conference_banner/$1';
 
-// Participant and Gallery Routes
+// Participant and Attachment Routes
 $route[$admin.'/participant/(:any)']	= 'participant/$1';
 $route[$admin.'/attachment/(:any)']		= 'participant/attachment/$1';
 

@@ -51,7 +51,7 @@ class Speakers Extends CI_Model {
 				. '`status` TINYINT(1) NULL , '
 				. '`added` INT(11) UNSIGNED NULL, '
 				. '`modified` INT(11) UNSIGNED NULL, '
-				. 'INDEX (`name`, `conference_id`) '
+				. 'INDEX (`url`, `conference_id`) '
 				. ') ENGINE=MYISAM DEFAULT CHARSET=utf8;';
 				
 				

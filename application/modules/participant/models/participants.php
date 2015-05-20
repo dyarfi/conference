@@ -84,10 +84,17 @@ class Participants Extends CI_Model {
 				foreach ($Q->result_object() as $row)
 				$data = $row;
 			}
-            //print_r($data);
-			$Q->free_result();
-			return $data;
-		}
+            if (!empty($data)) {
+                //Get user id
+                $this->db->where('id', $data->id);
+                // Set data to update
+                $update = array('status'=>1,'logged_in'=>1,'session_id'=>$this->session->userdata('session_id'),'last_login'=>time());
+                //Return result
+                $this->db->update($this->table, $update);
+            }
+            $Q->free_result();
+            return $data;
+		}        
     }
     
     public function getParticipant($id = null){
@@ -211,14 +218,20 @@ class Participants Extends CI_Model {
 		    }
 		} 			 
         
-        //print_r($data);
-        
-
 		$Q->free_result();
 		return $data;
 	    }
 	}
-	
+	/*
+    public function setActivation($object='') {
+        //Get user id
+	    $this->db->where('id', $object->id);
+        // Set data to update
+        $update = array('status'=>1,'completed'=>1,'logged_in'=>1,'session_id'=>$this->session->userdata('session_id'),'last_login'=>time());
+	    //Return result
+	    return $this->db->update($this->table, $update);
+	}
+    */
 	public function setLastLogin($id=null) {
 	    //Get user id
 	    $this->db->where('id', $id);

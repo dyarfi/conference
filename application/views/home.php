@@ -15,14 +15,56 @@
             <?php if($conference->synopsis) { ?>
                 <div class="lead"><?php echo $conference->synopsis;?></div><br/>
             <?php } ?>
-            <?php if($conference->cover_photo) { ?> 
-                <div class="lead">
-                    <img class="img-thumbnail" width="100%" src="<?php echo base_url('uploads/conferences').'/'.$conference->cover_photo; ?>"/>
-                </div>
+                
+            <?php if($banners) { ?>
+            <div class="clearfix marginbot-30">
+                <div class="col-lg-12 col-md-12 col-sm-12 column">
+                    <div class="carousel-top slide" id="carousel-468004">                
+                        <ol class="carousel-indicators">
+                            <?php
+                            $j=0;
+                            foreach ($banners as $banner) { ?>
+                                <li class="<?php echo $j == 0 ? 'active' :'';?>" data-slide-to="<?php echo $j;?>" data-target="#carousel-468004"></li>
+                            <?php $j++;
+                            } ?>
+                        </ol>
+                        <div class="carousel-inner">
+                        <?php
+                        $i=1;
+                        foreach ($banners as $banner) { ?>
+                            <div class="item <?php echo $i == 1 ? 'active' :'';?>">
+                                <a href="#"><img alt="" class="img-responsive" src="<?php echo base_url('uploads/banners').'/'.$banner->file_name; ?>"></a>
+                                <?php if ($banner->title) { ?>
+                                <div class="carousel-caption">
+                                    <!--<h4><?php echo $banner->title;?></h4>-->
+                                    <p><?php echo $banner->title;?></p>
+                                </div>						
+                                <?php } ?>
+                            </div>
+                        <?php 
+                        $i++;
+                        } ?>
+                        </div> 
+                        <a class="left carousel-control" href="#carousel-468004" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left"></span>
+                        </a> 
+                        <a class="right carousel-control" href="#carousel-468004" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right"></span>
+                        </a>
+                    </div>
+                </div>                
+            </div>
             <?php } ?>
-            <?php 
-                echo $conference->description;
-            ?>
+                
+                
+                <!--div class="lead">
+                    <img class="img-thumbnail" width="100%" src="<?php echo base_url('uploads/conferences').'/'.$conference->cover_photo; ?>"/>
+                </div-->
+                
+                <?php 
+                    echo $conference->description;
+                ?>
+                
             </div>
             <div class="col-lg-4 col-md-4 col-sm-4">
                 <div class="boxed-grey">
@@ -41,8 +83,23 @@
                     </fieldset>     
                     
                     <fieldset><legend>Important Dates</legend>
-                    <?php if($conference->messages) { ?>
-                        <div><?php echo strip_tags($conference->messages);?></div><br/>
+                    <?php if($schedules) { ?>
+                        <div class="marginbot-30">
+                        <?php foreach ($schedules as $schedule) { ?>
+                        <ul class="list-unstyled">
+                            <li class="list-group-item"><span class="fa fa-calendar fa-2x"></span> &nbsp;
+                                <?php 
+                                //print_r(time());
+                                //$how_long = timespan('3',10242342);
+                                //print_r($how_long);
+                                echo date('l, d F Y', strtotime($schedule->date));?>
+                                <div class="text-success">
+                                    <span><?php echo strip_tags($schedule->subject);?></span>
+                                </div>     
+                            </li>
+                        </ul>
+                        <?php } ?>
+                        </div>
                     <?php } ?>
                     </fieldset>
                     <?php 

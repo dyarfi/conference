@@ -1,7 +1,7 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-// Model Class Object for Gallery
-class Gallery Extends CI_Model {
+// Model Class Object for Galleries
+class Galleries Extends CI_Model {
     
 	// Table name for this model
 	protected $table = 'conference_images';
@@ -96,9 +96,12 @@ class Gallery Extends CI_Model {
 
 	    // Set Image data
 	    $data = array(	
-		    'part_id'   => $object['part_id'],
-		    'name'	=> $object['name'],
+		    'conference_id'   => $object['conference_id'],
+		    'url'	=> $object['url'],
 		    'title'	=> $object['title'],
+            'file_name'	=> $object['file_name'],            
+            'priority'	=> $object['priority'],
+		    'user_id'	=> $object['user_id'],		    
 		    'count'	=> $object['count'],
 		    'status'    => $object['status'],
 		    'added'	=> time(),	

@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Gallery extends Admin_Controller {
+class Conference_Gallery extends Admin_Controller {
 
     public function __construct() {
             parent::__construct();
@@ -35,29 +35,6 @@ class Gallery extends Admin_Controller {
         
     }
     
-    public function _callback_time ($value, $row) {
-		return empty($value) ? '-' : date('D, d-M-Y',$value);
-    }
-    
-    public function _callback_time_added ($value, $row) {
-		$time = time();
-		return '<input type="hidden" maxlength="50" value="'.$time.'" name="added">';
-    }
-    
-    public function _callback_time_modified ($value, $row) {		
-		$time = time();
-		return '<input type="hidden" maxlength="50" value="'.$time.'" name="modified">'.date('D, d-M-Y',$time);
-    }
-	
-	public function _callback_filename($value, $row) {
-		$row->file_name = strip_tags($row->file_name);
-        return '<div class="text-center"><a href="'.base_url('uploads/gallery/'.$row->file_name).'" class="image-thumbnail"><img height="110px" src="'.base_url('uploads/gallery/'.$row->file_name).'"/></a></div>';
-    }
-	
-	public function _callback_filename_url($value, $row) {
-		return ($row->file_name) ? base_url('uploads/users/'.$row->file_name) : '-';
-	}
-	
 	public function _send_email() {
 			
 
@@ -79,7 +56,7 @@ class Gallery extends Admin_Controller {
         
         $output = $crud->render();
 
-        // Set Gallery Title 
+        // Set Title 
         $output->page_title = 'Conference Gallery Listings';
 
         // Set Main Template

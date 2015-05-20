@@ -16,7 +16,7 @@
 	<div class="row-fluid">
 	    <div class="span12">
 		<div class="clear"></div>
-		<?php echo $output ?>
+		<?php echo $output; ?>
 	    </div>
 	</div>
 	<!-- END PAGE CONTENT-->

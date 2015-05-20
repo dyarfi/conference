@@ -10,13 +10,12 @@ class Schedules Extends CI_Model {
 		parent::__construct();
 		
 		$this->_model_vars	= array(
-						    'id'	=> 0,
-						    
+						    'id'	=> 0,						    
 						    'conference_id'	=> 0,
+                            'date'			=> '',
 						    'url'			=> '',
 						    'subject'		=> '',
 						    'description'	=> '',
-
 						    'is_system' => '',
 						    'status'	=> '',
 						    'added'	=> '',
@@ -39,6 +38,7 @@ class Schedules Extends CI_Model {
 		$sql	= 'CREATE TABLE IF NOT EXISTS `'.$this->table.'` (
 				  `id` int(11) NOT NULL AUTO_INCREMENT,
 				  `conference_id` INT(11) UNSIGNED NULL,
+                  `date` CHAR(32) NULL, 
 				  `url` VARCHAR(255) NULL, 
 				  `subject` VARCHAR(255) NULL, 
 				  `description` text NOT NULL,
@@ -102,13 +102,11 @@ class Schedules Extends CI_Model {
 		}
 	}
 	public function getAllSchedule($option=null){
-		$data = array();
-        
+		$data = array();        
         if ($option) {
             $this->db->where($option);
-        }
-        
-		$this->db->order_by('added');
+        }        
+		$this->db->order_by('date','ASC');
 		$Q = $this->db->get($this->table);
 			if ($Q->num_rows() > 0){
 				//foreach ($Q->result_object() as $row){
@@ -123,9 +121,10 @@ class Schedules Extends CI_Model {
 		
 		// Set User data
 		$data = array(			
-				'parameter' => $object['username'],
-				'alias' => $object['alias'],
-				'value' => $object['value'],
+                'conference_id' => $object['conference_id'],
+				'url' => $object['url'],
+				'subject' => $object['subject'],
+				'description' => $object['description'],
 				'is_system' => $object['is_system'],
 				'added'		=> time(),	
 				'status' => $object['status']

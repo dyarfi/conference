@@ -6,7 +6,27 @@
             //jQuery("#preloader").delay(100).fadeOut("slow");
             //jQuery("#load").delay(100).fadeOut("slow");
 	});
-                
+        
+        //jQuery to collapse the navbar on scroll
+	$(window).scroll(function() {
+            if ($(".navbar").offset().top > 50) {
+                $(".navbar-fixed-top").addClass("top-nav-collapse");		
+                $('.logo')
+                .find('img')
+                .attr('src',base_URL + 'assets/static/img/logo_small.png');
+            } else {
+                $(".navbar-fixed-top").removeClass("top-nav-collapse");			
+                $('.logo')
+                .find('img')
+                .attr('src',base_URL + 'assets/static/img/logo.png');
+            }
+            if ($(this).scrollTop() > 0) {
+                $('.back-top').show();
+            } else {
+                $('.back-top').hide();
+            }
+	});
+        
 	$('#container').imagesLoaded( function() {
 		// images have loaded
 		//alert("foobar");
@@ -16,20 +36,22 @@
 		interval: 9000
 	});
 
-	//jQuery to collapse the navbar on scroll
-	$(window).scroll(function() {
-            if ($(".navbar").offset().top > 50) {
-                $(".navbar-fixed-top").addClass("top-nav-collapse");		
-                $('.logo').find('img').attr('src',base_URL + 'assets/static/img/logo_small.png');	
-            } else {
-                $(".navbar-fixed-top").removeClass("top-nav-collapse");			
-                $('.logo').find('img').attr('src',base_URL + 'assets/static/img/logo.png');	
-            }
-            if ($(this).scrollTop() > 0) {
-                $('.back-top').show();
-            } else {
-                $('.back-top').hide();
-            }
+        $('.carousel-top').carousel({
+		interval: 9000
+	});
+	
+	$('.carousel-top').on('slide.bs.carousel', function () {
+		//$(this).find('.carousel-caption').css({'bottom':'90px'});
+		$(this).fadeOut(240).fadeIn(240);
+	});
+	$('.carousel-top').hover(function(){
+            $(this).find('.carousel-caption').animate({opacity:1,bottom:0}, 500, 'easeInOutExpo');
+            $(this).find('.carousel-indicators').animate({opacity:1}, 800, 'easeInOutExpo');
+            //$(this).find('.carousel-control').animate({'opacity':0.5});
+	},function(){
+            $(this).find('.carousel-caption').stop().animate({opacity:0,bottom:-50}, 600, 'easeInOutExpo');
+            $(this).find('.carousel-indicators').animate({opacity:0}, 900, 'easeInOutExpo');
+            //$(this).find('.carousel-control').animate({'opacity':0});
 	});
         
         $('.reload_captcha').click(function() {

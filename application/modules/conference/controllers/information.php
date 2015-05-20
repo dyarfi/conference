@@ -44,9 +44,9 @@ class Information extends Admin_Controller {
             // Set CRUD subject
             $crud->set_subject('Information');                            
             // Set table relation
-            $crud->set_relation('conference_id', 'tbl_conferences', 'subject');
+            $crud->set_relation('conference_id', 'tbl_conferences', 'name');
             // Set column
-            $crud->columns('subject','url','conference_id','cover','status');   
+            $crud->columns('subject','conference_id','cover','status');   
             // Unsets the fields at the add form.
 			$crud->unset_add_fields('count','added','modified');
 			// Unsets the fields at the edit form.
@@ -60,6 +60,16 @@ class Information extends Admin_Controller {
             $crud->field_type('user_id','hidden');
             $crud->field_type('added','hidden');
             $crud->field_type('modified','hidden');
+            
+            // This callback escapes the default auto field output of the field added at the add form
+			$crud->callback_add_field('added', function () {
+                return '<input type="hidden" maxlength="50" value="'.time().'" name="added">';
+            });
+			// This callback escapes the default auto field output of the field modified at the edit form
+            $crud->callback_edit_field('modified', function () {
+                return '<input type="hidden" maxlength="50" value="'.$time.'" name="modified">';
+            });
+            
             // Set upload field
             $crud->set_field_upload('cover','uploads/informations');
             $this->load($crud, 'Information');
@@ -77,7 +87,7 @@ class Information extends Admin_Controller {
         $output = $crud->render();
         $output->nav = $nav;
         if ($crud->getState() == 'list') {
-            // Set Page Title 
+            // Set Title 
             $output->page_title = 'Information Listings';
             // Set Main Template
             $output->main       = 'template/admin/metronix';

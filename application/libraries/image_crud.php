@@ -348,7 +348,7 @@ class image_CRUD {
     	$rsegments_array = $this->ci->uri->rsegment_array();
         
         /**** Additional Params for the URL handling ****/
-        $real_url = $this->ci->uri->segment(1) .'/'. $this->ci->uri->segment(2).'/';
+        $real_url = $this->ci->uri->segment(1) .'/';
         
     	return site_url($real_url.$rsegments_array[1].'/'.$rsegments_array[2].'/delete_file/'.$value);
     }
@@ -404,7 +404,7 @@ class image_CRUD {
         $rsegments_array = $this->ci->uri->rsegment_array();
         
         /**** Additional Params for the URL handling ****/
-        $real_url = $this->ci->uri->segment(1) .'/'. $this->ci->uri->segment(2).'/';
+        $real_url = $this->ci->uri->segment(1) .'/';
 
 		if(isset($rsegments_array[3]) && is_numeric($rsegments_array[3]))
 		{
